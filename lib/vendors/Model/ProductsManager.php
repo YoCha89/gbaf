@@ -9,5 +9,5 @@ abstract class ProductsManager extends Manager
   abstract public function getList();
 
   //Récupération d'un produit précis
-  abstract public function getUnique();
+  abstract public function getUnique($id);
 }

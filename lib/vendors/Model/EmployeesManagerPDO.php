@@ -3,7 +3,7 @@ namespace Model;
 
 use \Entity\Employees;
 
-abstract class EmployeesManagerPDO extends EmployeesManager
+class EmployeesManagerPDO extends EmployeesManager
 {
 	public function getEmployeePass($userName)
 	{
@@ -12,7 +12,7 @@ abstract class EmployeesManagerPDO extends EmployeesManager
 		$sql->execute();
 
 		$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Employees');
-		$pass = $sql->fetchAll();
+		$pass = $sql->fetch();
 
 		$sql->closeCursor();
 
@@ -26,7 +26,21 @@ abstract class EmployeesManagerPDO extends EmployeesManager
 		$sql->execute();
 
 		$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Employees');
-		$employee = $sql->fetchAll();
+		$employee = $sql->fetch();
+
+		$sql->closeCursor();
+
+		return $employee;
+	}
+
+	public function getEmployeePerUserName($userName)
+	{
+		$sql =$this->dao->prepare('SELECT id, name, firstName, userName, pass, secretQ, secretA FROM employees WHERE userName = :userName');
+  		$sql->bindValue(':userName', $userName);
+		$sql->execute();
+
+		$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Employees');
+		$employee = $sql->fetch();
 
 		$sql->closeCursor();
 
@@ -35,24 +49,23 @@ abstract class EmployeesManagerPDO extends EmployeesManager
 
 	public function checkUserName($userName)
 	{
-		$sql =$this->dao->prepare('SELECT userName FROM employees WHERE userName = :userName');
+	    $sql =$this->dao->prepare('SELECT userName FROM employees WHERE userName = :userName');
   		$sql->bindValue(':userName', $userName);
 		$sql->execute();
 
-		$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Employees');
-		$userName = $sql->fetchAll();
+		$userName = $sql->fetch();
 
 		$sql->closeCursor();
 
 		return $userName;
 	}
 
-	public function updatePass($id, $pass)
+	public function updatePass($userName, $pass)
 	{
-		$sql = $this->dao->prepare('UPDATE employees SET pass = :pass WHERE id= :id');
+		$sql = $this->dao->prepare('UPDATE employees SET pass = :pass WHERE userName= :userName');
 
-		$sql->bindValue(':id', (int) $id, \PDO::PARAM_INT);
-		$sql->bindValue(':pass', $employee->pass());
+		$sql->bindValue(':userName', $userName);
+		$sql->bindValue(':pass', $pass);
 		
 		$sql->execute();
 

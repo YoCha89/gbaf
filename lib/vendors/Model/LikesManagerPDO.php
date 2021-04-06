@@ -12,7 +12,7 @@ class LikesManagerPDO extends LikesManager
 		$sql->execute();
 
 		$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Likes');
-		$productVerdicts = $sql->fetchAll();
+		$productVerdicts = $sql->fetchall();
 
 		$sql->closeCursor();
 
@@ -36,9 +36,8 @@ class LikesManagerPDO extends LikesManager
   		$sql = $this->dao->prepare('SELECT COUNT(*) FROM likes WHERE productId = :productId');
   		$sql->bindValue(':productId', (int) $productId, \PDO::PARAM_INT);
 		$sql->execute();
-    	$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Likes');
     
-    	$verdictNumber = $sql->fetchAll();
+    	$verdictNumber = $sql->fetch();
     
     	$sql->closeCursor();
     
@@ -48,10 +47,14 @@ class LikesManagerPDO extends LikesManager
 	public function countLikes($productId)
 	{
 		$sql = $this->dao->prepare('SELECT COUNT(*) FROM likes WHERE productId = :productId AND verdict = 1'); //Rappel : si l'utilisateur like un produit, la valeur 1 est entrée. En cas de dislike, c'est le 0.
-		$sql = $this->dao->query($sql);
-    	$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Likes');
+		$sql->bindValue(':productId', (int)  $productId, \PDO::PARAM_INT);
     
-    	$likeNumber = $sql->fetchAll();
+    	$likeNumber = $sql->fetch();
+
+    	if (empty($likeNumber))
+    	{
+    		$likeNumber=0;
+    	}
     
     	$sql->closeCursor();
     

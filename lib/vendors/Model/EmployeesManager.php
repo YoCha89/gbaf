@@ -7,22 +7,25 @@ use \Entity\Employees;
 abstract class EmployeesManager extends Manager
 {
 	//Récupération du pass pour comparaison et connexion
-	abstract public function getEmployeePass($userName)
+	abstract public function getEmployeePass($userName);
 
 	//Saisie des informations relatives à un employé grace à son id
-	abstract public function getEmployeePerId($id)
+	abstract public function getEmployeePerId($id);
+
+	//récupération des infos compte d'un utilisateur non connecté pour le jeu de question/réponse en cas d'oubli de mot de passe
+	abstract public function getEmployeePerUserName($userName);
 
 	//Vérifie la disponibilité d'un nom d'utilisateur
-	abstract public function checkUserName($userName)
+	abstract public function checkUserName($userName);
 
 	//met à jour le mot de passe de l'utilisateur
-	abstract public function updatePass($id, $pass)
+	abstract public function updatePass($userName, $pass);
 
 	//ajoute un utilisateur en BDD
-	abstract public function addEmployee(Employees $employee)
+	abstract public function addEmployee(Employees $employee);
 
 	//met à jour les information d'un utilisateur en BDD
-	abstract public function updateEmployee(Employees $employee)
+	abstract public function updateEmployee(Employees $employee);
 
 	//fonction permettant un chemin similaire pour la création/mise à jour de compte au sein du controleur du module Employees
 	public function save(Employees $employee)

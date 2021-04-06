@@ -6,47 +6,116 @@ class Router
   protected $routes = [];
  
   const NO_ROUTE = 1;
- 
-  public function addRoute(Route $route)
+
+  public function getRoute($action)
   {
-    if (!in_array($route, $this->routes))
+    if (!empty($action))
     {
-      $this->routes[] = $route;
-    }
-  }
- 
-  public function getRoute($url)
-  {
-    foreach ($this->routes as $route)
-    {
-      // Si la route correspond à l'URL
-      if (($varsValues = $route->match($url)) !== false)
+      if ($action == 'index')
       {
-        // Si elle a des variables
-        if ($route->hasVars())
-        {
-          $varsNames = $route->varsNames();
-          $listVars = [];
- 
-          // On crée un nouveau tableau clé/valeur
-          // (clé = nom de la variable, valeur = sa valeur)
-          foreach ($varsValues as $key => $match)
-          {
-            // La première valeur contient entièrement la chaine capturée (voir la doc sur preg_match)
-            if ($key !== 0)
-            {
-              $listVars[$varsNames[$key - 1]] = $match;
-            }
-          }
- 
-          // On assigne ce tableau de variables � la route
-          $route->setVars($listVars);
-        }
- 
-        return $route;
+        $action = 'index';
+        $module = 'Employees';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'createAccount')
+      {
+        $action = 'createAccount';
+        $module = 'Employees';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'updateAccount')
+      {
+        $action = 'updateAccount';
+        $module = 'Employees';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'updatePass')
+      {
+        $action = 'updatePass';
+        $module = 'Employees';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'seeAccount')
+      {
+        $action = 'seeAccount';
+        $module = 'Employees';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'disconnect')
+      {
+        $action = 'disconnect';
+        $module = 'Employees';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'showProducts')
+      {
+        $action = 'showProducts';
+        $module = 'Products';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'showProduct')
+      {
+        $action = 'showProduct';
+        $module = 'Products';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'likeProduct')
+      {
+        $action = 'likeProduct';
+        $module = 'Products';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else if ($action == 'commentProduct')
+      {
+        $action = 'commentProduct';
+        $module = 'Products';
+        $var = null;
+        $matchedRoute = new Route ($module, $action, $var);
+        return $matchedRoute;
+      }
+
+      else
+      {
+        throw new \RuntimeException('Aucune route ne correspond à l\'URL', self::NO_ROUTE);
       }
     }
- 
-    throw new \RuntimeException('Aucune route ne correspond à l\'URL', self::NO_ROUTE);
+  
+    //Route d'entrée de l'utilisateur sur le site
+    else
+    {
+      $action = 'index';
+      $module = 'Employees';
+      $var = null;
+      $matchedRoute = new Route ($module, $action, $var);
+      return $matchedRoute;
+    }
+    
   }
 }

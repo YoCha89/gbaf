@@ -13,7 +13,7 @@ class Product extends Entity
 
     public function isValid()
   {
-    return !(empty($this->logoUrl) || empty($this->title) || empty($this->description);
+    return !(empty($this->logoUrl) || empty($this->title) || empty($this->description));
   }
 
   // GETTERS //

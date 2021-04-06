@@ -24,9 +24,11 @@ class ProductsManagerPDO extends ProductsManager
     $sql = $this->dao->prepare ('SELECT id, logoUrl, title, description FROM products WHERE id = :id');
     
     $sql->bindValue(':id', (int) $id, \PDO::PARAM_INT);
+    $sql->execute();
+
     $sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Products');
     
-    $product = $sql->fetchAll();
+    $product = $sql->fetch();
     
     $sql->closeCursor();
     

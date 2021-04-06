@@ -12,7 +12,6 @@ abstract class BackController extends ApplicationComponent
   public function __construct(Application $app, $module, $action)
   {
     parent::__construct($app);
- 
     $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
     $this->page = new Page($app);
  
@@ -24,12 +23,13 @@ abstract class BackController extends ApplicationComponent
   public function execute()
   {
     $method = 'execute'.ucfirst($this->action);
+
  
     if (!is_callable([$this, $method]))
     {
       throw new \RuntimeException('L\'action "'.$this->action.'" n\'est pas définie sur ce module');
     }
- 
+
     $this->$method($this->app->httpRequest());
   }
  

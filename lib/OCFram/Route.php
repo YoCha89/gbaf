@@ -5,16 +5,13 @@ class Route
 {
   protected $action;
   protected $module;
-  protected $url;
-  protected $varsNames;
-  protected $vars = [];
+  protected $var;
  
-  public function __construct($url, $module, $action, array $varsNames)
+  public function __construct($module, $action, $var)
   {
-    $this->setUrl($url);
     $this->setModule($module);
     $this->setAction($action);
-    $this->setVarsNames($varsNames);
+    $this->setVar($var);
   }
  
   public function hasVars()
@@ -33,7 +30,8 @@ class Route
       return false;
     }
   }
- 
+
+  //SETTERS
   public function setAction($action)
   {
     if (is_string($action))
@@ -50,24 +48,12 @@ class Route
     }
   }
  
-  public function setUrl($url)
+  public function setVar($var)
   {
-    if (is_string($url))
-    {
-      $this->url = $url;
-    }
+    $this->var = $var;
   }
  
-  public function setVarsNames(array $varsNames)
-  {
-    $this->varsNames = $varsNames;
-  }
- 
-  public function setVars(array $vars)
-  {
-    $this->vars = $vars;
-  }
- 
+  //GETTERS
   public function action()
   {
     return $this->action;
@@ -80,11 +66,6 @@ class Route
  
   public function vars()
   {
-    return $this->vars;
-  }
- 
-  public function varsNames()
-  {
-    return $this->varsNames;
+    return $this->var;
   }
 }

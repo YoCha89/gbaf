@@ -7,25 +7,32 @@ class CommentsManagerPDO extends CommentsManager
 {
 	public function allowComment($productId, $employeeId)
 	{
-  		$sql =$this->dao->prepare('SELECT content, employeeId FROM comments WHERE productId = :productId');
+  		$sql =$this->dao->prepare('SELECT employeeId FROM comments WHERE productId = :productId');
   		$sql->bindValue(':productId', (int) $productId, \PDO::PARAM_INT);
 		$sql->execute();
 
-		$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Comments');
-		$productComments = $sql->fetchAll();
+		$employeeIds = $sql->fetchAll();
 
 		$sql->closeCursor();
 
-		foreach ($productComments as $comment) 
+		if (!empty($employeeIds))
 		{
-			if ($comment['employeeId'] != $employeeId)
+			foreach ($employeeIds as $singleIds) 
 			{
-				$commented=true;
+				if ($singleIds != $employeeId)
+				{
+					$commented='allow';
+				}
+				else
+				{
+					$commented='forbid';
+				}
 			}
-			else
-			{
-				$commented=false;
-			}
+		}
+
+		else
+		{
+			$commented='forbid';
 		}
 
 		return $commented;
@@ -38,6 +45,7 @@ class CommentsManagerPDO extends CommentsManager
 		$sql->execute();
     
     	$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Comments');
+
     
     	$listComments = $sql->fetchAll();
 
@@ -45,7 +53,7 @@ class CommentsManagerPDO extends CommentsManager
 	    {
 	    	$comments->setCreationDate(new \DateTime($comments->creationDate()));
 	    }
-    
+
     	$sql->closeCursor();
     
     	return $listComments;
@@ -56,9 +64,8 @@ class CommentsManagerPDO extends CommentsManager
 		$sql = $this->dao->prepare('SELECT COUNT(*) FROM comments WHERE productId = :productId');
   		$sql->bindValue(':productId', (int) $productId, \PDO::PARAM_INT);
 		$sql->execute();
-    	$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Comments');
     
-    	$commentsNumber = $sql->fetchAll();
+    	$commentsNumber = $sql->fetch();
     
     	$sql->closeCursor();
     
