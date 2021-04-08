@@ -1,7 +1,7 @@
 
 <p>Mettez à jour les informations de votre compte.</p>
 
-<form method="post" action="<?='update-account-'.$_POST['id'].'.html'?>">
+<form method="post" action="bootstrap.php?action=updateAccount&id=<?=$_SESSION['id']?>">
 	<?= isset($erreurs) && in_array(\Entity\Employees::NOM_INVALIDE, $erreurs) ? 'Veuillez saisir un nom.<br />' : '' ?>
 	<label for="name">Nom</label>
 	<input type="text" name="Name" value="<?php echo $employee['name'] ?>">
@@ -20,7 +20,6 @@
 	<label for="secretA">Saisissez votre réponse secrète</label>
 	<input type="text" name="secretA" value="<?php echo $employee['secretA'] ?>">
 </form>
-
 
 
 <!--Chargement automatique des champs autre que MDP

@@ -4,19 +4,19 @@
 	<label for="userName">Nom d'utilisateur</label>
 	<input type="text" name="userName">
 	<label for="pass">Mot de passe</label>
-	<input type="password" name="Pass">
+	<input type="password" name="pass">
 	<button type="submit">Se connecter</button>
 </form>
 
 <p>En cas d'oublie, merci d'entrez votre nom d'utilisateur avant de valider</p>
-<form method="post" action="<?='update-pass-'.$_POST['userName'].'html'?>">
+<form method="post" action="bootstrap.php?action=updatePass">
 	<label for="userName">Nom d'utilisateur</label>
 	<input type="text" name="userName">
 	<button type="submit">Mot de passe oublié</button>
 </form>
 
 <p>Vous n'avez pas encore de compte ?</p>
-<form method="post" action="<?='create-account.html'?>">
+<form method="post" action="bootstrap.php?action=createAccount">
 	<button type="submit">Créer mon compte</button>
 </form>
 

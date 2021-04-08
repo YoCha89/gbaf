@@ -12,7 +12,7 @@ Nom d'utilisateur : <?$employee['userName']?><br/>
 
 </p>
 
-<form method="post" action="<?='update-account-'.$_SESSION['id'].'html'?>">
+<form method="post" action="bootstrap.php?action=updateAccount&id=<?=$_SESSION['id']?>">
 	<button type="submit">Mettre à jour ses informations</button>
 </form>
 

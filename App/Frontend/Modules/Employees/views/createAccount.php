@@ -1,10 +1,10 @@
 
 <p>Créez votre compte pour accéder à votre portail.</p>
 
-<form method="post" action="create-account.html">
+<form method="post" action="bootstrap.php?action=createAccount">
 	<?= isset($erreurs) && in_array(\Entity\Employees::NOM_INVALIDE, $erreurs) ? 'Veuillez saisir un nom.<br />' : '' ?>
-	<label for="Name">Nom</label>
-	<input type="text" name="Name">
+	<label for="name">Nom</label>
+	<input type="text" name="name">
 	<?= isset($erreurs) && in_array(\Entity\Employees::PRENOM_INVALIDE, $erreurs) ? 'Veuillez saisir un prénom.<br />' : '' ?>
 	<label for="firstName">Prénom</label>
 	<input type="text" name="firstName">

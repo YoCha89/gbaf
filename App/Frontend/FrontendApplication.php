@@ -14,9 +14,18 @@ class FrontendApplication extends Application
  
   public function run()
   {
-    $controller = $this->getController();
+    if ($this->user->isAuthenticated())
+    {
+      $controller = $this->getController();
+    }
+
+    else
+    {
+      $controller = new Modules\Employees\EmployeesController($this, 'Employees', 'index');
+    }
+
     $controller->execute();
- 
+
     $this->httpResponse->setPage($controller->page());
     $this->httpResponse->send();
   }

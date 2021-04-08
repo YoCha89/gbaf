@@ -4,36 +4,63 @@
     <title>
       <?= isset($title) ? $title : 'GBAF' ?>
     </title>
-    
     <meta charset="utf-8" />
-    
-    <link rel="stylesheet" href="/css/Envision.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mode.css" type="text/css" />  
+    <link rel="icon" href="images/FaviconGBAF.ico" />
   </head>
   
   <body>
-    <div id="wrap">
+   
       <header>
-        <h1><a href="/">Portail BBAF</a></h1>
-      </header>
-      
-      <nav>
-        <ul>
-          <li><a href="/">Connexion</a></li>
-          <li><a href=>Besoin d'aide ?</a></li>
-          <li><a href=>Mon compte</a></li>
-          <li><a href=>Besoin dinspiration ?</a></li>
-        </ul>
-      </nav>
-      
-      <div id="content-wrap">
+          <div id="tete">
+            <div id="logo">
+              <img src="images/LogoGBAF.png" alt="LogoGBAF" id="LogoHeader"/>
+            </div>
+            <?php
+            if ($_SESSION['auth'] == true)
+            {
+            ?>
+            <div id="userBloc">
+              <div id="user">
+                  <a href="bootstrap.php?action=seeAccount&id=<?$_SESSION['id']?>"><img src="images/logoUser.png" alt="logoUser" id="logoUser"/></a>
+                  <p> <a href="bootstrap.php?action=seeAccount&id=<?$_SESSION['id']?>"><span id="userSelf"><?=$_SESSION['userName']?></span></a></p>
+              </div>
+              <div id="decButton">
+                  <form method="post" action="disconnect.html">
+                  <button type="submit" id="boutonDeco">Déconnexion</button>
+                  </form>
+              </div>
+            <?php 
+              }
+            ?>
+            </div>
+          </div>
+      </header> 
+<!-- FIN DU HEADER LAYOUT -->
+
+     <div id="content-wrap">
         <section id="main">
           <?php if ($user->hasFlash()) echo '<p style="text-align: center;">', $user->getFlash(), '</p>'; ?>
           
           <?= $content ?>
         </section>
       </div>
+      
+     
+<!-- DEBUT DU FOOTER LAYOUT -->
+      </div>
+      <footer>
+      <table id="menuFoot">
+        <tbody>
+          <tr>
+            <td data-align="center"><a href="#propos" class="lienMenu">Mentions Légales</a></td>
+            <td data-align="center">|</td>
+            <td data-align="center"><a href="#competence" class="lienMenu">Contact</a></td>
+          </tr>
+        </tbody>
+      </table>
+      </footer>
     
-      <footer></footer>
-    </div>
   </body>
 </html>

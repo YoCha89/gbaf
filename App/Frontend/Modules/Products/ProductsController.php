@@ -39,7 +39,7 @@ class ProductsController extends BackController
     		//Les informations relatives aux likes/dislikes du produit (décompte et statut de l'utilisateur en session concernant l'expression de son avis)
     		$verdicts = $managerL-> countVerdicts($request->getdata('id'));
     		$likes = $managerL-> countLikes($request->getdata('id'));
-    		$dislikes = $verdicts-$likes;
+    		$dislikes = (int)$verdicts-(int)$likes;
 
     		$allowLike = $managerL-> allowLike($request->getdata('id'), $this->app->user()->getAttribute($id));
 
@@ -67,16 +67,16 @@ class ProductsController extends BackController
             'employeeId' => $this->app->user()->getAttribute($id),
             'productId' => $request->getData('id'),
             'verdict' => $request->postData('verdict')
-        )];
+        ]);
 
         //Saisie du manager des likes
         $managerL = $this->managers->getManagerOf('Likes');    
 
         //ajout en BDD
-        $managerL->addLikeVerdict (Likes $like);
+        $managerL-> addLikeVerdict($like);
 
         //redirection pour retour sur la page du produit évalué
-        $this->app->httpResponse()->redirect('show-product-'.$request->getdata('id').'.html');
+        $this->app->httpResponse()->redirect('bootstrap.php?action=showProduct;id='.$request->getdata('id'));
     }
 
     public function executeCommentProduct (HTTPRequest $request)
@@ -90,18 +90,18 @@ class ProductsController extends BackController
             'author' => $this->app->user()->getAttribute($firstName),
             'productId' => $request->getData('id'),
             'content' => $request->postData('content')
-            )];
+            ]);
 
             //Saisie du manager des commentaires
-            $managerC = $this->managers->getManagerOf('comment');
+            $managerC = $this->managers->getManagerOf('comments');
 
             //ajout en BDD
             if($comment->isValid())
             {
-                $managerC->addComment(Comments $comment);
+                $managerC->addComment($comment);
 
                 //redirection pour retour sur la page du produit commenté
-                $this->app->httpResponse()->redirect('show-product-'.$request->getdata('id').'.html');
+                $this->app->httpResponse()->redirect('bootstrap.php?action=showProduct;id='.$request->getdata('id'));
             }
 
             else

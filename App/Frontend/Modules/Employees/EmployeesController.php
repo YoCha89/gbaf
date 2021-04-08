@@ -1,12 +1,12 @@
 <?php
-namespace App\Frontend\Modules\Users;
+namespace App\Frontend\Modules\Employees;
 
 use \OCFram\BackController;
 use \OCFram\HTTPRequest;
-use \Entity\Users;
 use \Entity\Employees;
 
-class UsersController extends BackController
+
+class EmployeesController extends BackController
 {
 	//formulaire de connexion en guise d'entrée pour l'application. Etablissement des variables de session. Retour sur index avec message d'erreur si co à échoué, Redirection showproduct si ok
 	public function executeIndex (HTTPRequest $request)
@@ -14,29 +14,47 @@ class UsersController extends BackController
 		//on vérifie si le user arrive sur la page ou a envoyé le formulaire de connexion
 		if ($request->postExists('userName'))
     	{
-	     	$passEntered = password_hash($request->postData('pass'), PASSWORD_DEFAULT);
+	     	$passEntered = $request->postData('pass');
 	    	$userNameEntered = $request->postData('userName');
 
 	    	//Obtention du manager des salariés
 	    	$managerE = $this->managers->getManagerOf('Employees');
 
 	    	//Récupération des infos nécessaires en BDD
-	    	$registeredPass = $managerE->getEmployeePass($userNameEntered);
+	    	$employee = $managerE->getEmployeePerUsername($userNameEntered);
+	    	$registeredPass = $employee['pass'];
 
-	    	//confirmation du mot de passe
-	    	if ($passEntered == $registeredPass)
+	    	//confirmation du mot de passe entré
+	    	if(password_verify($passEntered, $registeredPass))
 		    {
 			    //setup de l'indicateur de connexion effective
 			    $this->app->user()->setAuthenticated(true);
 
 			    //Etablissement des supervariables de session dont nous aurons usage
-				$this->app->user()->setAttribute($id, $employee['id']);;
-			    $this->app->user()->setAttribute($firstName, $employee['firstName']);
+				$this->app->user()->setAttribute('id', $employee['id']);
+			    $this->app->user()->setAttribute('userName', $employee['userName']);
+			    $this->app->user()->setAttribute('firstName', $employee['firstName']);
 			    $this->app->user()->setFlash('Vous êtes connecté, nous sommes ravis de votre retour !');
 
 			    //Redirection en cas de connexion
-			    $this->app->httpResponse()->redirect('show-products.html');
+			    $this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');
 		    }
+
+		  /* //BOUCLE DE CONNEXION AUTOMATIQUE POUR DEBOGAGE-------------------------------------------------------------------
+		    else if ($userNameEntered == 'Yocha')
+		    {
+		    	//setup de l'indicateur de connexion effective
+			    $this->app->user()->setAuthenticated(true);
+
+			    //Etablissement des supervariables de session dont nous aurons usage
+				$this->app->user()->setAttribute($id, $employee['id']);
+			    $this->app->user()->setAttribute($firstName, $employee['firstName']);
+			    $this->app->user()->setAttribute($userName, $employee['userName']);
+			    $this->app->user()->setFlash('Vous êtes connecté, nous sommes ravis de votre retour !');
+
+			    //Redirection en cas de connexion
+			    $this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');
+		    } */
 
 		    else
 		    {
@@ -58,8 +76,7 @@ class UsersController extends BackController
 			//Vérification de la disponibilité de l'alias
 			if (!empty ($managerE->checkUserName($request->postData('userName'))))
 			{
-
-				$this->app->user()->setFlash('Ce nom d\'utilisateur n\'est pas disponible.');
+				$this->app->user()->setFlash('Ce nom d\'utilisateur n\'est pas disponible.');					  		
 			}
 
 			else
@@ -71,17 +88,19 @@ class UsersController extends BackController
 				$this->app->user()->setFlash('Vous avez saisie 2 mots de passe différents.');
 				}
 
+
 				else
 				{
 					//cryptage du pass
 					$pass = password_hash($request->postData('pass'), PASSWORD_DEFAULT);
 
 					//Fonction gérant les création et mise à jour de compte
-					$this->processForm($request);
+
+					$this->processForm($request, $pass, $managerE);
 
 			   		$this->app->user()->setFlash('Votre compte a été créé, bienvenue sur le portail salarié de la GBAF !');
 
-			   		$this->app->httpResponse()->redirect('show-products.html');
+			   		$this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');
 				}
 			}
 		}
@@ -108,8 +127,14 @@ class UsersController extends BackController
 	//Mise à jour des infos du compte
 	public function executeUpdateAccount (HTTPRequest $request)
 	{
+		//Obtention du manager des salariés
+	    $managerE = $this->managers->getManagerOf('Employees');
+
+	    //Récupération des infos en BDD de l'utilisateur connecté 
+	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute($id));
+
 		//Si le champs "name" n'est pas rempli via le formulaire, l'utilisateur vient d'arriver, il faut remplir les champs par défaut
-		if (!= $request->postExists('name')))
+		if (empty ($request->postExists('name')))
 		{
 	    	//ajout des infos sur la page
 	    	$this->page->addVar('employee', $employee);
@@ -118,40 +143,35 @@ class UsersController extends BackController
 		//Si le champs "name" est complété à l'éxécution de updateAccount, l'utilisateur a envoyé le formulaire à jour
 		else
 		{
-			//Obtention du manager des salariés
-	    	$managerE = $this->managers->getManagerOf('Employees');
-
-	    	//Récupération des infos en BDD de l'utilisateur connecté 
-	   		$employee = $managerE->getEmployeePerId($this->app->user()->getAttribute($id));
-
-			//Avant de mettre à jour, on s'assure d'avoir un nom d'utilisateur inchangé ou unique. 
-			if (!empty ($managerE->checkUserName($request->postData('userName')))
-			{
-				if ($request->postData('userName') == $employee['userName'])))
+			//Avant de mettre à jour, on s'assure d'avoir un nom d'utilisateur unique. On regarde d'abord si c'est un nouveau userName
+			if (!empty ($managerE->checkUserName($request->postData('userName'))))
+			{	
+				//Si le userName n'est pas nouveau, on regarde s'il correspond à l'ancien nom de l'utilisateur, sinon, il essaye d'utiliser un nouveau nom déja pris.
+				if ($request->postData('userName') == $employee['userName'])
 				{
-					$id = $employee['id']
-					$pass = $employee['pass'] //la variable a été récupérée en BDD, le pass est déja crypté.
+					$id = $employee['id'];
+					$pass = $employee['pass']; //la variable a été récupérée en BDD, le pass est déja crypté.
 
 					//Fonction gérant les création et mise à jour de compte
-					$this->processForm($request);
+					$this->processForm($request, $pass);
 
 					$this->app->user()->setFlash('Votre compte a bien été mis à jour !');
 
 					//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
-					$this->app->httpResponse()->redirect('see-account-'.$id.'.html');
+					$this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount;id='.$id); 
 				}
 
 				else
 				{
 					$this->app->user()->setFlash('Ce nom d\'utilisateur n\'est pas disponible.');
-				}
-				
+				}	
 			}
 
+			//si checkUsername a renvoyer un résultat vide, sachant que l'on a remplit les champs du formulaire par défaut, on sait que le username est nouveau et unique
 			else
 			{
-				$id = $employee['id']
-				$pass = $employee['pass'] //la variable a été récupérée en BDD, le pass est déja crypté.
+				$id = $employee['id'];
+				$pass = $employee['pass']; //la variable a été récupérée en BDD, le pass est déja crypté.
 
 				//Fonction gérant les création et mise à jour de compte
 				$this->processForm($request);
@@ -159,10 +179,9 @@ class UsersController extends BackController
 				$this->app->user()->setFlash('Votre compte a bien été mis à jour !');
 
 				//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
-				$this->app->httpResponse()->redirect('see-account-'.$id.'.html');
+				$this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount;id='.$id);
 			}
 		}
-
 	}
 
 
@@ -170,14 +189,13 @@ class UsersController extends BackController
 	public function executeUpdatePass (HTTPRequest $request)
 	{
 		//Obtention du manager des salariés
-	    $managerE = $this->managers->getManagerOf('Employees');
+	    $managerE = $this->managers->getManagerOf('Employees'); 
 
-	    //Récupération des infos de l'utilisateur en BDD
-	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute($id));
-
-		//Si le champs "newPass" n'est pas rempli via le formulaire à l'éxécution de updatePass, l'utilisateur vient d'arriver sur l'interface. Sinon, on lance le script de mise à jour en BDD
-		if (!= $request->postExists('newPass')))
+		//Si le champs "newPass" est rempli on lance le script de mise à jour en BDD
+		if ($request->postExists('newPass'))
 		{
+			$employee = $managerE->getEmployeePerUserName($request->postData('userName'));
+
 			//Vérification de la réponse secrète de l'utilisateur
 			if ($request->postData('secretA') == $employee['secretA'])
 			{
@@ -191,20 +209,29 @@ class UsersController extends BackController
 				{
 					$pass = password_hash($request->postData('newPass'), PASSWORD_DEFAULT);
 
-	            	$managerE = $this->managers->updatePass($this->app->user()->getAttribute($id), $pass);
+	            	$managerE->updatePass($request->postData('userName'), $pass);
 
 	            	$this->app->user()->setFlash('Votre mot de passe a bien été mis à jour !');
 
 					//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
-					$this->app->httpResponse()->redirect('see-account-'.$id.'.html');
+					$this->app->httpResponse()->redirect('bootstrap.php?action=index');
 	            }
-	        }
+            }
 
-	        else
+             else
 	        {
 	        	$this->app->user()->setFlash('Vous n\'avez pas entré la bonne réponse à votre question secrète.');
 	        }
-		}
+	    }
+
+	     //Si le champs "newPass" n'est pas rempli, l'utilisateur vient d'arriver sur l'interface, on affiche la question
+	    else
+	    {
+	    	//Récupération des infos de l'utilisateur en BDD 
+	    	$employee = $managerE->getEmployeePerUserName($request->postData('userName'));
+
+	    	$this->page->addVar('employee', $employee);
+	    }
 	}
 
 
@@ -214,23 +241,23 @@ class UsersController extends BackController
 		//setup de l'indicateur de connexion à "false"
 		$this->app->user()->setAuthenticated(false);
 
-		$this->app->httpResponse()->redirect('index.html');
+		$this->app->httpResponse()->redirect('bootstrap.php?action=index'); 
 	}
 
 
 	//fonction permettant de poursuivre les processus de mises à jour ou création de compte utilisateur
-	public function processForm(HTTPRequest $request)
+	public function processForm(HTTPRequest $request, $pass, $managerE)
   	{
-	    $employee = new Employees ([
+    	$employee = new Employees ([
 	    'name' => $request->postData('name'),
 	    'firstName' => $request->postData('firstName'),
 	    'userName' => $request->postData('userName'),
 	    'pass' => $pass,
 	    'secretQ' => $request->postData('secretQ'),
 	    'secretA' => $request->postData('secretA')
-		)];
-	 
-	    // L'identifiant de la news est transmis si on veut la modifier.
+		]);
+
+	    // L'identifiant de l'utilisateur est hydrayer en cas de mise à jour.
 	    if (isset($id))
 	    {
 	      $employee->setId($id);
@@ -238,13 +265,14 @@ class UsersController extends BackController
 	 
 	    if ($employee->isValid())
 		{
-			$managerE = $this->managers->saveEmployee($employee);
+			$managerE->saveEmployee($employee);
 
 			//Une fois le compte créé/mis à jour, on connecte automatiquement l'utilisateur avec les mêmes étapes
 			$this->app->user()->setAuthenticated(true);
 
-			$this->app->user()->setAttribute($id, $employee['id']);
+			$this->app->user()->setAttribute($id, $employee['id']);;
 			$this->app->user()->setAttribute($firstName, $employee['firstName']);
+			$this->app->user()->setAttribute($userName, $employee['userName']);
 		}
 
 	    else

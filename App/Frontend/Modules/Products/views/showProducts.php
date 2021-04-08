@@ -8,10 +8,10 @@ foreach ($listProducts as $products)
 {
 ?>
   <img src="$products['logoUrl']" alt="logoPartenaire" id="logoPartenaire"/>
-  <h3><?= $products['title'] ?></h3>
-  <p><?= nl2br($products['description']) ?></p>
-  <a href="show-product-<?= $product['id']?>.html">Consultez ce produit</a>
+  <h3><?= $products['title'] ?></h3><br/>
+  <p><?= nl2br($products['description']) ?></p><br/>
+  <form method="post" action="bootstrap.php?action=showProduct&id=<?= $products['id']?>">
+  <button type="submit" class="bouton">Lire la suite</button>
+  </form>
 <?php
 }
-
-
