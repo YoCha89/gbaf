@@ -33,40 +33,59 @@ class ProductsController extends BackController
 
     	//Récupération des données nécessaires en BDD - La gestion du like unique et commentaire unique par utilisateur est géré séparemment pour les 2 entités
 
-    		//le produit concerné
-    		$product = $managerP->getUnique($request->getdata('id'));
+		//le produit concerné
+		$product = $managerP->getUnique($request->getdata('id'));
 
-    		//Les informations relatives aux likes/dislikes du produit (décompte et statut de l'utilisateur en session concernant l'expression de son avis)
-    		$verdicts = $managerL-> countVerdicts($request->getdata('id'));
-    		$likes = $managerL-> countLikes($request->getdata('id'));
-    		$dislikes = (int)$verdicts-(int)$likes;
+		//Gestion des informations relatives aux likes/dislikes du produit 
+		$verdicts = $managerL-> countVerdicts($request->getdata('id'));
+		$likes = $managerL-> countLikes($request->getdata('id'));
+		$dislikes = (int)$verdicts-(int)$likes;
 
-    		$allowLike = $managerL-> allowLike($request->getdata('id'), $this->app->user()->getAttribute($id));
+		$allowLike = $managerL-> allowLike($request->getdata('id'), $this->app->user()->getAttribute('id'));
 
-    		//Les informations relatives aux commentaires du produit (décompte et statut de l'utilisateur en session concernant l'expression de son avis)
-    		$ListComments = $managerC-> getComments($request->getdata('id'));
-            $commentsNumber = $managerC-> countComments($request->getdata('id'));
+        if ($allowLike == "allow")
+        {
+            $likeOption = '<span id=\'interfaceLike\'><?= $likes ?><form method="post" action="bootstrap.php?action=likeProduct&id='.$request->getdata('id').'&verdict=O"><span id=\'boutonlike\'><input type="image" id="like" alt="pouceup" src="liiiiiiiiiiiiiike.png"></span>
+                </form><form method="post" action="bootstrap.php?action=likeProduct&id='.$request->getdata('id').'&verdict=N"><span id=\'boutonlike\'><input type="image" id="dislike" alt="poucedown" src="disliiiiiiiiiiiiiiiiiiiike.png"><?= $dislikes ?></span></form></span>';
+         }
+        else
+        {
+            $likeOption = '<p>Produit évalué</p><img src="liiiiiiiiiiiiiike.png" alt="imagelike" id="imagelike"><?= $likes ?> <img src="disliiiiiiiiiiiiiiiiiiiike.png" alt="imagedislike" id="imagedislike"><?= $dislikes ?>';
+        }
 
-    		$allowComment = $managerC-> allowComment($request->getdata('id'), $this->app->user()->getAttribute($id));
+		//Gestion des informations relatives aux commentaires du produit 
+		$listComments = $managerC-> getComments($request->getdata('id'));
+        $commentsNumber = $managerC-> countComments($request->getdata('id'));
+
+		$allowComment = $managerC-> allowComment($request->getdata('id'), $this->app->user()->getAttribute('id'));
+        
+        if ($allowComment == 'allow')
+        {
+            $commentOption = '<form method="post" action="bootstrap.php?action=commentProduct&id='.$request->getdata('id').'"><button type="submit" class="bouton">Nouveau commentaire</button></form>';
+        } 
+        else
+        {
+            $commentOption = '<p>Votre avis est enregistré</p>';
+        }
 
     	// Ajout des variables à afficher.
     	$this->page->addVar('title', $product['title']); 
-        $this->page->addVar('product', $product);
-        $this->page->addVar('allowComment', $allowComment);
-        $this->page->addVar('ListComments', $ListComments);
+        $this->page->addVar('product', $product);       
+        $this->page->addVar('listComments', $listComments);
         $this->page->addVar('commentsNumber', $commentsNumber);
-        $this->page->addVar('allowLike', $allowLike);
+        $this->page->addVar('commentOption', $commentOption);
+        $this->page->addVar('likeOption', $likeOption);
         $this->page->addVar('likes', $likes);
         $this->page->addVar('dislikes', $dislikes);
-
 	}
 
     public function executeLikeProduct (HTTPRequest $request)
     {
+
         $like = new Likes ([
-            'employeeId' => $this->app->user()->getAttribute($id),
+            'employeeId' => $this->app->user()->getAttribute('id'),
             'productId' => $request->getData('id'),
-            'verdict' => $request->postData('verdict')
+            'verdict' => $request->getData('verdict')
         ]);
 
         //Saisie du manager des likes
@@ -76,18 +95,18 @@ class ProductsController extends BackController
         $managerL-> addLikeVerdict($like);
 
         //redirection pour retour sur la page du produit évalué
-        $this->app->httpResponse()->redirect('bootstrap.php?action=showProduct;id='.$request->getdata('id'));
+        $this->app->httpResponse()->redirect('bootstrap.php?action=showProduct&id='.$request->getdata('id'));
     }
 
     public function executeCommentProduct (HTTPRequest $request)
     {
-        //la présence d'un commentaire rédigé en méthode post permet de savoir si l'utilisateur à écris le commentaire et doit être redirigé vers la page produit où figurera son commentaire ou s'il doit accéder au formulaire de commentaire
+        //la présence d'un commentaire rédigé en méthode post permet de savoir si l'utilisateur à déja écris le commentaire ou s'il doit accéder au formulaire de commentaire
         if ($request->postExists('content'))
         {
             //Création du nouveau commentaire
             $comment = new Comments ([
-            'employeeId' => $this->app->user()->getAttribute($id),
-            'author' => $this->app->user()->getAttribute($firstName),
+            'employeeId' => $this->app->user()->getAttribute('id'),
+            'author' => $this->app->user()->getAttribute('firstName'),
             'productId' => $request->getData('id'),
             'content' => $request->postData('content')
             ]);
@@ -100,8 +119,10 @@ class ProductsController extends BackController
             {
                 $managerC->addComment($comment);
 
+                $this->app->user()->setFlash('Votre commentaire a été enregistré !');
+
                 //redirection pour retour sur la page du produit commenté
-                $this->app->httpResponse()->redirect('bootstrap.php?action=showProduct;id='.$request->getdata('id'));
+                $this->app->httpResponse()->redirect('bootstrap.php?action=showProduct&id='.$request->getdata('id'));
             }
 
             else
@@ -110,6 +131,21 @@ class ProductsController extends BackController
                 $this->page->addVar('erreurs', $comment->erreurs());
             }
             
+        }
+
+        //affichage du produit a commenter avec le formulaire
+        else
+        {
+            $managerP = $this->managers->getManagerOf('Products');
+
+            //le produit concerné
+            $product = $managerP->getUnique($request->getdata('id'));
+            $salId = $this->app->user()->getAttribute('id');
+            $firstName = $this->app->user()->getAttribute('firstName');
+
+            $this->page->addVar('product', $product);
+            $this->page->addVar('salId', $salId);
+            $this->page->addVar('firstName', $firstName);
         }  
     }
 }

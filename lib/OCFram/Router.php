@@ -48,7 +48,7 @@ class Router
       }
 
       else if ($action == 'seeAccount')
-      {
+      { 
         $action = 'seeAccount';
         $module = 'Employees';
         $var = null;
@@ -97,12 +97,12 @@ class Router
         $action = 'commentProduct';
         $module = 'Products';
         $var = null;
-        $matchedRoute = new Route ($module, $action, $var);
+        $matchedRoute = new Route ($module, $action, $var);   
         return $matchedRoute;
       }
 
       else
-      {
+      { 
         throw new \RuntimeException('Aucune route ne correspond à l\'URL', self::NO_ROUTE);
       }
     }

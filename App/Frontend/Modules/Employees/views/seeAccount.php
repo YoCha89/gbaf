@@ -4,15 +4,15 @@
 
 <p>
 
-Nom : <?$employee['name']?><br/>
+Nom : <?=$employee['name']?><br/>
 
-Prénom : <?$employee['firstName']?> <br/>	
+Prénom : <?=$employee['firstName']?> <br/>	
 
-Nom d'utilisateur : <?$employee['userName']?><br/>
+Nom d'utilisateur : <?=$employee['userName']?><br/>
 
 </p>
 
-<form method="post" action="bootstrap.php?action=updateAccount&id=<?=$_SESSION['id']?>">
+<form method="post" action="bootstrap.php?action=updateAccount&id=<?=$employee['id']?>">
 	<button type="submit">Mettre à jour ses informations</button>
 </form>
 

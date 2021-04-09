@@ -1,10 +1,10 @@
 
 <p>Mettez à jour les informations de votre compte.</p>
 
-<form method="post" action="bootstrap.php?action=updateAccount&id=<?=$_SESSION['id']?>">
+<form method="post" action="bootstrap.php?action=updateAccount">
 	<?= isset($erreurs) && in_array(\Entity\Employees::NOM_INVALIDE, $erreurs) ? 'Veuillez saisir un nom.<br />' : '' ?>
 	<label for="name">Nom</label>
-	<input type="text" name="Name" value="<?php echo $employee['name'] ?>">
+	<input type="text" name="name" value="<?php echo $employee['name'] ?>">
 	<?= isset($erreurs) && in_array(\Entity\Employees::PRENOM_INVALIDE, $erreurs) ? 'Veuillez saisir un prénom.<br />' : '' ?>
 	<label for="firstName">Prénom</label>
 	<input type="text" name="firstName" value="<?php echo $employee['firstName'] ?>">
@@ -19,6 +19,8 @@
 	<?= isset($erreurs) && in_array(\Entity\Employees::REPONSE_INVALIDE, $erreurs) ? 'Veuillez saisir votre réponse secrète à nouveau.<br />' : '' ?>
 	<label for="secretA">Saisissez votre réponse secrète</label>
 	<input type="text" name="secretA" value="<?php echo $employee['secretA'] ?>">
+
+	<button type="submit">Mettre à jour</button>
 </form>
 
 

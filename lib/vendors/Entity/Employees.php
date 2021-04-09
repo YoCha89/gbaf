@@ -3,7 +3,7 @@ namespace Entity;
 
 use \OCFram\Entity;
 
-class Employee extends Entity
+class Employees extends Entity
 {
 	protected $name,
             $firstName,

@@ -40,22 +40,6 @@ class EmployeesController extends BackController
 			    $this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');
 		    }
 
-		  /* //BOUCLE DE CONNEXION AUTOMATIQUE POUR DEBOGAGE-------------------------------------------------------------------
-		    else if ($userNameEntered == 'Yocha')
-		    {
-		    	//setup de l'indicateur de connexion effective
-			    $this->app->user()->setAuthenticated(true);
-
-			    //Etablissement des supervariables de session dont nous aurons usage
-				$this->app->user()->setAttribute($id, $employee['id']);
-			    $this->app->user()->setAttribute($firstName, $employee['firstName']);
-			    $this->app->user()->setAttribute($userName, $employee['userName']);
-			    $this->app->user()->setFlash('Vous êtes connecté, nous sommes ravis de votre retour !');
-
-			    //Redirection en cas de connexion
-			    $this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');
-		    } */
-
 		    else
 		    {
 		    	$this->app->user()->setFlash('Votre nom d\'utlisateur ou votre mot de passe sont incorrect.');
@@ -106,7 +90,6 @@ class EmployeesController extends BackController
 		}
 	}
 
-
 	//Voir les informations de son compte
 	public function executeSeeAccount (HTTPRequest $request)
 	{
@@ -117,7 +100,7 @@ class EmployeesController extends BackController
 	    $managerE = $this->managers->getManagerOf('Employees');
 
 	    //Récupération des infos nécessaires en BDD
-	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute($id));
+	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute('id'));
 
 	    //ajout des infos sur la page
 	    $this->page->addVar('employee', $employee);
@@ -131,10 +114,12 @@ class EmployeesController extends BackController
 	    $managerE = $this->managers->getManagerOf('Employees');
 
 	    //Récupération des infos en BDD de l'utilisateur connecté 
-	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute($id));
+	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute('id'));
+	  /* var_dump($request->postData('name'),$request->postData('name'));
+	    die; */
 
 		//Si le champs "name" n'est pas rempli via le formulaire, l'utilisateur vient d'arriver, il faut remplir les champs par défaut
-		if (empty ($request->postExists('name')))
+		if (empty ($request->postData('name')))
 		{
 	    	//ajout des infos sur la page
 	    	$this->page->addVar('employee', $employee);
@@ -145,7 +130,7 @@ class EmployeesController extends BackController
 		{
 			//Avant de mettre à jour, on s'assure d'avoir un nom d'utilisateur unique. On regarde d'abord si c'est un nouveau userName
 			if (!empty ($managerE->checkUserName($request->postData('userName'))))
-			{	
+			{
 				//Si le userName n'est pas nouveau, on regarde s'il correspond à l'ancien nom de l'utilisateur, sinon, il essaye d'utiliser un nouveau nom déja pris.
 				if ($request->postData('userName') == $employee['userName'])
 				{
@@ -153,12 +138,12 @@ class EmployeesController extends BackController
 					$pass = $employee['pass']; //la variable a été récupérée en BDD, le pass est déja crypté.
 
 					//Fonction gérant les création et mise à jour de compte
-					$this->processForm($request, $pass);
+					$this->processForm($request, $pass, $managerE);
 
 					$this->app->user()->setFlash('Votre compte a bien été mis à jour !');
 
 					//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
-					$this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount;id='.$id); 
+					$this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount'); 
 				}
 
 				else
@@ -270,9 +255,9 @@ class EmployeesController extends BackController
 			//Une fois le compte créé/mis à jour, on connecte automatiquement l'utilisateur avec les mêmes étapes
 			$this->app->user()->setAuthenticated(true);
 
-			$this->app->user()->setAttribute($id, $employee['id']);;
-			$this->app->user()->setAttribute($firstName, $employee['firstName']);
-			$this->app->user()->setAttribute($userName, $employee['userName']);
+			$this->app->user()->setAttribute('id', $employee['id']);
+			$this->app->user()->setAttribute('firstName', $employee['firstName']);
+			$this->app->user()->setAttribute('userName', $employee['userName']);
 		}
 
 	    else

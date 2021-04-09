@@ -5,20 +5,6 @@ use \Entity\Employees;
 
 class EmployeesManagerPDO extends EmployeesManager
 {
-	public function getEmployeePass($userName)
-	{
-		$sql =$this->dao->prepare('SELECT pass FROM employees WHERE userName = :userName');
-  		$sql->bindValue(':userName', $userName);
-		$sql->execute();
-
-		$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Employees');
-		$pass = $sql->fetch();
-
-		$sql->closeCursor();
-
-		return $pass;
-	}
-
 	public function getEmployeePerId($id)
 	{
 		$sql =$this->dao->prepare('SELECT id, name, firstName, userName, pass, secretQ, secretA FROM employees WHERE id = :id');

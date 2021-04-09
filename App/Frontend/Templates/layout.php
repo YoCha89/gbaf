@@ -23,8 +23,8 @@
             ?>
             <div id="userBloc">
               <div id="user">
-                  <a href="bootstrap.php?action=seeAccount&id=<?$_SESSION['id']?>"><img src="images/logoUser.png" alt="logoUser" id="logoUser"/></a>
-                  <p> <a href="bootstrap.php?action=seeAccount&id=<?$_SESSION['id']?>"><span id="userSelf"><?=$_SESSION['userName']?></span></a></p>
+                  <a href="bootstrap.php?action=seeAccount"><img src="images/logoUser.png" alt="logoUser" id="logoUser"/></a>
+                  <p> <a href="bootstrap.php?action=seeAccount"><span id="userSelf"><?=$_SESSION['userName']?></span></a></p>
               </div>
               <div id="decButton">
                   <form method="post" action="disconnect.html">

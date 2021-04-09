@@ -3,7 +3,7 @@ namespace Entity;
 
 use \OCFram\Entity;
 
-class Like extends Entity
+class Likes extends Entity
 {
 	protected $employeeId,
             $productId,

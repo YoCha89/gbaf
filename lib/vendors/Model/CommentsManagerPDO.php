@@ -11,15 +11,15 @@ class CommentsManagerPDO extends CommentsManager
   		$sql->bindValue(':productId', (int) $productId, \PDO::PARAM_INT);
 		$sql->execute();
 
-		$employeeIds = $sql->fetchAll();
+		$employeesIds = $sql->fetchall();
 
 		$sql->closeCursor();
 
-		if (!empty($employeeIds))
+		if (!empty($employeesIds))
 		{
-			foreach ($employeeIds as $singleIds) 
+			foreach ($employeesIds as $singleIds) 
 			{
-				if ($singleIds != $employeeId)
+				if ($singleIds['employeeId'] != $employeeId)
 				{
 					$commented='allow';
 				}
@@ -32,7 +32,7 @@ class CommentsManagerPDO extends CommentsManager
 
 		else
 		{
-			$commented='forbid';
+			$commented='allow';
 		}
 
 		return $commented;
@@ -40,7 +40,7 @@ class CommentsManagerPDO extends CommentsManager
 
 	public function getComments($productId)
 	{
-		$sql =$this->dao->prepare('SELECT id, employeeId, productId, content, creationDate FROM comments WHERE productId = :productId ORDER BY creationDate DESC');
+		$sql =$this->dao->prepare('SELECT id, employeeId, author, productId, content, creationDate FROM comments WHERE productId = :productId ORDER BY creationDate DESC');
 		$sql->bindValue(':productId', (int) $productId, \PDO::PARAM_INT);
 		$sql->execute();
     
@@ -55,7 +55,7 @@ class CommentsManagerPDO extends CommentsManager
 	    }
 
     	$sql->closeCursor();
-    
+
     	return $listComments;
 	}
 
@@ -67,8 +67,8 @@ class CommentsManagerPDO extends CommentsManager
     
     	$commentsNumber = $sql->fetch();
     
-    	$sql->closeCursor();
-    
+    	$sql->closeCursor(); 
+    	
    		return $commentsNumber;
 	}
 
