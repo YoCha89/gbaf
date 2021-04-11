@@ -27,6 +27,7 @@ class LikesManagerPDO extends LikesManager
 				else
 				{
 					$evaluate="forbid";
+					break;
 				}
 			}
 		}
@@ -54,7 +55,7 @@ class LikesManagerPDO extends LikesManager
 
 	public function countLikes($productId)
 	{
-		$sql = $this->dao->prepare('SELECT COUNT(*) FROM likes WHERE productId = :productId AND verdict = 1'); //Rappel : si l'utilisateur like un produit, la valeur 1 est entrée. En cas de dislike, c'est le 0.
+		$sql = $this->dao->prepare('SELECT COUNT(*) FROM likes WHERE productId = :productId AND verdict = "O"'); //Rappel : si l'utilisateur like un produit, la valeur 1 est entrée. En cas de dislike, c'est le 0.
 		$sql->bindValue(':productId', (int)  $productId, \PDO::PARAM_INT);
 		$sql->execute();
     

@@ -39,18 +39,39 @@ class ProductsController extends BackController
 		//Gestion des informations relatives aux likes/dislikes du produit 
 		$verdicts = $managerL-> countVerdicts($request->getdata('id'));
 		$likes = $managerL-> countLikes($request->getdata('id'));
-		$dislikes = (int)$verdicts-(int)$likes;
+		$dislikes = (int)$verdicts[0]-(int)$likes[0];
 
 		$allowLike = $managerL-> allowLike($request->getdata('id'), $this->app->user()->getAttribute('id'));
 
         if ($allowLike == "allow")
         {
-            $likeOption = '<span id=\'interfaceLike\'><?= $likes ?><form method="post" action="bootstrap.php?action=likeProduct&id='.$request->getdata('id').'&verdict=O"><span id=\'boutonlike\'><input type="image" id="like" alt="pouceup" src="liiiiiiiiiiiiiike.png"></span>
-                </form><form method="post" action="bootstrap.php?action=likeProduct&id='.$request->getdata('id').'&verdict=N"><span id=\'boutonlike\'><input type="image" id="dislike" alt="poucedown" src="disliiiiiiiiiiiiiiiiiiiike.png"><?= $dislikes ?></span></form></span>';
+            $likeOption = '<div class="IntLike">
+                                <div class=boutSmartL>
+                                    <span class="nbL">'.$likes[0].'</span>
+                                    <form method="post" action="bootstrap.php?action=likeProduct&id='.$request->getdata('id').'&verdict=O">
+                                        <button type="submit" id="boutonLike"></button>
+                                    </form>
+                                </div>
+                                <div class=boutSmartD>  
+                                    <form method="post" action="bootstrap.php?action=likeProduct&id='.$request->getdata('id').'&verdict=N">
+                                        <button type="submit" id="boutonDislike"></button>
+                                    </form>
+                                    <span class="nbL">'.$dislikes.'</span>
+                                </div>
+                            </div>';
          }
         else
         {
-            $likeOption = '<p>Produit évalué</p><img src="liiiiiiiiiiiiiike.png" alt="imagelike" id="imagelike"><?= $likes ?> <img src="disliiiiiiiiiiiiiiiiiiiike.png" alt="imagedislike" id="imagedislike"><?= $dislikes ?>';
+            $likeOption = '<div class="IntLike">
+                                    <div class=boutSmartL>
+                                        <span class="nbL">'.$likes[0].'</span>
+                                        <div class="thumbBoxL"></div>
+                                    </div>
+                                    <div class=boutSmartD>
+                                        <div class="thumbBoxD"></div>
+                                        <span class="nbL">'.$dislikes.'</span>
+                                    </div>
+                            </div>';
         }
 
 		//Gestion des informations relatives aux commentaires du produit 
@@ -61,11 +82,20 @@ class ProductsController extends BackController
         
         if ($allowComment == 'allow')
         {
-            $commentOption = '<form method="post" action="bootstrap.php?action=commentProduct&id='.$request->getdata('id').'"><button type="submit" class="bouton">Nouveau commentaire</button></form>';
-        } 
+            $commentOption = '<div class=IntCom>
+                <div id="nbComm">'.$commentsNumber[0].'<br/>commentaires</div>
+                    <form method="post" action="bootstrap.php?action=commentProduct&id='.$request->getdata('id').'">
+                        <button type="submit" class="boutonComm">Nouveau<br/>commentaire</button>
+                    </form>
+                </div>';
+        }
+         
         else
         {
-            $commentOption = '<p>Votre avis est enregistré</p>';
+            $commentOption = '<div class=IntCom>
+                    <div id="nbComm">'.$commentsNumber[0].'<br/>commentaires</div>
+                        <p><span class="comDenied">Votre avis<br/> est enregistré</span></p>
+                    </div>';
         }
 
     	// Ajout des variables à afficher.

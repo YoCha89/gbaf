@@ -14,6 +14,7 @@ class EmployeesController extends BackController
 		//on vérifie si le user arrive sur la page ou a envoyé le formulaire de connexion
 		if ($request->postExists('userName'))
     	{
+    	
 	     	$passEntered = $request->postData('pass');
 	    	$userNameEntered = $request->postData('userName');
 
@@ -23,6 +24,11 @@ class EmployeesController extends BackController
 	    	//Récupération des infos nécessaires en BDD
 	    	$employee = $managerE->getEmployeePerUsername($userNameEntered);
 	    	$registeredPass = $employee['pass'];
+
+
+    /*$test='ici';
+      var_dump($passEntered,$userNameEntered,$registeredPass);
+    die; */
 
 	    	//confirmation du mot de passe entré
 	    	if(password_verify($passEntered, $registeredPass))
@@ -42,7 +48,7 @@ class EmployeesController extends BackController
 
 		    else
 		    {
-		    	$this->app->user()->setFlash('Votre nom d\'utlisateur ou votre mot de passe sont incorrect.');
+		    	$this->app->user()->setFlash('Votre nom d\'utilisateur ou votre mot de passe sont incorrect.');
 		    }
 	    }
 	}
@@ -51,6 +57,8 @@ class EmployeesController extends BackController
 	//Création du compte
 	public function executeCreateAccount (HTTPRequest $request)
 	{
+	    $this->page->addVar('title', 'Création du compte');
+	    
 		//Obtention du manager des salariés
 	    $managerE = $this->managers->getManagerOf('Employees');
 
@@ -110,13 +118,13 @@ class EmployeesController extends BackController
 	//Mise à jour des infos du compte
 	public function executeUpdateAccount (HTTPRequest $request)
 	{
+		$this->page->addVar('title', 'Mise à jour du compte');
+
 		//Obtention du manager des salariés
 	    $managerE = $this->managers->getManagerOf('Employees');
 
 	    //Récupération des infos en BDD de l'utilisateur connecté 
 	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute('id'));
-	  /* var_dump($request->postData('name'),$request->postData('name'));
-	    die; */
 
 		//Si le champs "name" n'est pas rempli via le formulaire, l'utilisateur vient d'arriver, il faut remplir les champs par défaut
 		if (empty ($request->postData('name')))
@@ -173,6 +181,8 @@ class EmployeesController extends BackController
 	//Mise à jour du mot de passe en cas d'oubli. Si postexist, process et redirection. Sinon, affichage formulaire. Message d'erreur à prévoir
 	public function executeUpdatePass (HTTPRequest $request)
 	{
+		$this->page->addVar('title', 'Mise à jour du mot de passe');
+
 		//Obtention du manager des salariés
 	    $managerE = $this->managers->getManagerOf('Employees'); 
 
@@ -223,8 +233,8 @@ class EmployeesController extends BackController
 	//Déconnexion de la session, redirection vers index
 	public function executeDisconnect (HTTPRequest $request)
 	{
-		//setup de l'indicateur de connexion à "false"
 		$this->app->user()->setAuthenticated(false);
+		$this->app->user()->destroy();
 
 		$this->app->httpResponse()->redirect('bootstrap.php?action=index'); 
 	}

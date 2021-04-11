@@ -49,7 +49,6 @@
       
      
 <!-- DEBUT DU FOOTER LAYOUT -->
-      </div>
       <footer>
       <table id="menuFoot">
         <tbody>

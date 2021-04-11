@@ -1,33 +1,45 @@
-<p>Bienvenu sur votre portail GBAF !</p>
+<div id="principal">
 
-<form method="post" action="">
-	<label for="userName">Nom d'utilisateur</label>
-	<input type="text" name="userName">
-	<label for="pass">Mot de passe</label>
-	<input type="password" name="pass">
-	<button type="submit">Se connecter</button>
-</form>
+	<div id="bandeauAccueil"><p><span id="txtBandeauAccueil">Bienvenu sur votre portail GBAF !</span></p></div>
 
-<p>En cas d'oublie, merci d'entrez votre nom d'utilisateur avant de valider</p>
-<form method="post" action="bootstrap.php?action=updatePass">
-	<label for="userName">Nom d'utilisateur</label>
-	<input type="text" name="userName">
-	<button type="submit">Mot de passe oublié</button>
-</form>
+	<div class="form">
+		<div class="blocForm">
+			<form method="post" action="bootstrap.php?action=index">
+				<div class="champ">
+					<label for="userName">Nom d'utilisateur :</label>
+					<input type="text" name="userName"><br/>
+				</div>
+				<div class="champ">
+					<label for="pass">Mot de passe :</label>
+					<input type="password" name="pass">
+				</div>
+					<br/><button type="submit" class="bouton">Se connecter</button>
+			</form>
+		</div>
 
-<p>Vous n'avez pas encore de compte ?</p>
-<form method="post" action="bootstrap.php?action=createAccount">
-	<button type="submit">Créer mon compte</button>
-</form>
+		<div id="option2">
+			<div id="blocOubli">
+				<p>En cas d'oublie, entrez votre nom d'utilisateur avant de valider</p><br/>
+				<form method="post" action="bootstrap.php?action=updatePass">
+					<div class="champ">
+						<label for="userName">Nom d'utilisateur :</label><br/>
+						<input type="text" name="userName">
+					</div>
+					<br/><button type="submit" class="boutonOp2">Mot de passe oublié</button>
+				</form>
+			</div>
 
-
-
-
-<!--Connexion requise pour accéder aux informations du site via un UserName
-et un Password.
-● Au chargement de la page, les champs UserName et Password prennent
-toute la largeur de l’écran, entre le h eader et le f ooter .
-
-Si l'utilisateur est déconnecté, il est redirigé automatiquement vers la
-première page pour une nouvelle connexion via un UserName et un
-Password.-->
+			<div id="separeVert"></div>
+			<hr id="separeHori">
+		
+				
+			<div id="blocCrea">
+				<p>Vous n'avez pas encore de compte ?</p><br/>
+				<p>Créez votre compte dès maintenant !</p><br/>
+				<form method="post" action="bootstrap.php?action=createAccount">
+					<br/><button type="submit" class="boutonOp2">Créer mon compte</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

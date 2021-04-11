@@ -47,4 +47,9 @@ class User extends ApplicationComponent
   {
     $_SESSION['flash'] = $value;
   }
+
+  public function destroy()
+  {
+    session_destroy();
+  }
 }

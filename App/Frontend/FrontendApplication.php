@@ -14,7 +14,13 @@ class FrontendApplication extends Application
  
   public function run()
   {
-    if ($this->user->isAuthenticated())
+    if ($this->httpRequest->getData('action') == 'index')
+    {
+      $controller = $this->getController();
+    }
+
+    //L'action index est naturellement exclue de la vérification de connexion
+    else if ($this->user->isAuthenticated())
     {
       $controller = $this->getController();
     }

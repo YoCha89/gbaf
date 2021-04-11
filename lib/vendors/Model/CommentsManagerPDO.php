@@ -26,8 +26,14 @@ class CommentsManagerPDO extends CommentsManager
 				else
 				{
 					$commented='forbid';
+					break;
 				}
 			}
+
+				/*
+		$test="ici";
+		var_dump($employeesIds, $employeeId, $commented);
+		die;*/
 		}
 
 		else
