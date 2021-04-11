@@ -1,0 +1,990 @@
+
+/*STYLE PAR DEFAUT DES ELEMENTS GLOBAUX / DEFAULT STYLE FOR GLOBAL ELEMENTS*/
+	html
+	{
+		font-family: sourcesanspro, Helvetica, Arial, sans-serif;
+		font-size: 15px;
+		color : #545151;
+	}
+
+	h1
+	{
+		font-size : 3.3rem;
+		color : #070707;
+		text-align: center;
+	}
+
+	h2
+	{
+		font-size: 1.5rem;
+	}
+
+	h3
+	{
+		font-size: 1.17rem;
+	}
+
+	.bouton
+	{
+		font-family: sourcesanspro, Helvetica, Arial, sans-serif;
+		font-size: 1.2em;
+		color : white;
+		background-color: #ff0000;
+		padding:auto;
+		border-radius: 0.3rem;
+		width : 10rem;
+		height: 2.7rem;
+		font-weight: bold;
+		margin-top: 3rem;
+		margin-bottom: 3rem;
+	}
+
+	p
+	{
+		font-size: 1rem;
+		text-align:justify;
+		margin : 0;
+		padding : 0;
+	}
+
+	.prezActeur
+	{
+		font-size: 1.3rem;
+	}
+
+	a
+	{
+		font-size : 1rem;
+		color: #ff0000;
+		text-decoration: none;
+	}
+
+
+	#principal
+	{
+		width:85%;
+		background-color: #ccc2c2;
+		margin : auto;
+		padding-bottom: 2rem;
+		padding-top: 2rem;
+	}
+
+	label
+	{
+		font-size : 1.2em;
+	}
+
+
+	hr
+	{
+		text-align: center;
+		width : 25rem;
+		margin-top : 4rem;
+		margin-bottom : 4rem;
+	}
+
+
+/*MISE EN FORME LAYOUT (HEADER ET FOOTER) / LAYOUT STYLE (HEADER AND FOOTER) */
+	/*Capsule de tout le header / Blox trapping the whole hearder*/
+	#tete 
+	{
+		display: flex;
+		justify-content: space-between;
+		height : 8rem;
+		align-items: center;
+		margin : 0;
+		width: 100%;
+	}
+
+	/*Images of the header */
+	#LogoHeader
+	{
+		max-width: auto;
+		height: 6rem;
+		margin: auto;
+		padding-left: 2rem;
+	}
+	#logoUser 
+	{
+		width: 2.3rem;
+		height :2.3rem;
+		margin-right:0.3rem;
+	}
+
+	#user
+	{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	#userBloc
+	{
+		width : 25%;
+		align-self: center;
+		padding-right: 2rem;
+	}
+
+	#decButton
+	{
+		display : flex;
+		justify-content: center;
+		margin-top: 0.3rem;
+	}
+
+	#boutonDeco
+	{
+		font-family: sourcesanspro, Helvetica, Arial, sans-serif;
+		font-size: 1.0em;
+		color : white;
+		background-color: #ff0000;
+		padding: auto;
+		border-radius: 0.3rem;
+		width : 10rem;
+		height: 2.0rem;
+		font-weight: bold;
+	}
+
+	header
+	{
+		background-color: #ffffff;
+		width: 100%;
+		border-bottom: 0.3rem double #070707 ;
+		margin : 0;
+	}
+
+	#menuFoot
+	{
+		margin:auto;
+	}
+
+	footer
+	{
+		background-color: #070707;
+		height : 6.7rem;
+		width: 100%;
+		margin : 0;
+	}
+
+	#menuFoot
+	{
+		padding-top: 1.3rem;
+		color : #ffffff;
+	}
+
+	.lienMenu
+	{
+		color : #ffffff;
+		margin-left: 0.3rem;
+		margin-right: 0.3rem;
+	}
+
+
+
+/*PAGE LISTE PARTENAIRES / PAGE LISTING EVERY PARTNERSHIPS*/
+
+	#bandeau
+	{
+		background-color: #ffffff;
+		padding: 1.3rem;
+	}
+
+	#banniere
+	{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin:auto;
+		width: 70%;
+		
+	}
+
+	#PortailPres
+	{
+		text-align:justify;
+		width : 75%;
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	#LogoGBAF 
+	{
+		max-width: auto;
+		height: 13.3rem;
+		margin-bottom: 2rem;
+	}
+
+	#prezList
+	{
+		width : 100%;
+		padding: 1.3rem;
+		background-color: #595454;
+		color: #ffffff;
+		margin : 0;
+	}
+
+	#prezText
+	{
+		width : 75%;
+		margin : auto;
+		padding-bottom: 2rem;
+	}
+
+	/*Bloc liste partenaires*/
+	#listeActeurs
+	{
+		padding-left: 5%;
+		padding-right: 5%;
+	}
+
+	/*Bloc avec tous les éléments d'un acteur*/
+	.acteur
+	{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+		padding : 2rem;
+		background-color: #ffffff;
+		box-shadow: 1rem 0.67rem 0.67rem #595454;
+		border: 0.07rem solid #070707 ;
+		border-radius: 0px 5.3rem 0px 0px;
+	}
+
+	/*Mise en forme de l'image*/
+	#logoPartenaire
+	{
+		width: 16rem;
+		height: auto;
+		align-items: center;
+	}
+
+	/*Blocs enfant pour un acteur individuel : log, txt, bouton / The 3 child of the acteur block*/
+	.logoPartenaire
+	{
+		align-self: center;
+	}
+
+	.partenaireTextuelle
+	{
+		display: flex;
+		justify-content: space-around;
+		flex-grow: 1;
+	}
+
+	.txtActeur
+	{
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		padding-left: 1.3rem;
+		padding-right: 1.3rem;
+		padding-top: 0;
+		width : 100%;
+	}
+
+	.lire
+	{
+		align-self: flex-end;
+	}
+
+
+/*STYLE DES VUES ACTEUR UNIQUE / STYLE FOR VIEWS DISPLAYING SINGLE ACTORS*/
+	#blocPartenaire
+	{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		margin:auto;
+		margin-bottom: 4rem;
+		width: 70%;
+		padding: 1.3rem;
+		background-color: #ffffff;
+		box-shadow: 1rem 0.67rem 0.67rem #595454;
+		border: 0.13rem solid #918787;
+	}
+
+	#logoVueUnique
+	{
+		max-width: auto;
+		height: 13.3rem;
+		align-self: center;
+		margin-top: 2.67em;
+		margin-bottom: 2.67em;
+	}
+
+	#lienRetour
+	{
+		margin-top: 2rem;
+		text-align: center;
+		font-size: bold;
+		color : #918787;
+	}
+
+		
+	/*Bloc de l'interface pour liker/commenter et afficher les autres commentaires/ Displays likes/comments infterface and displays product's comments*/
+	#avis
+	{
+		width : 85%;
+		margin : auto;
+		background-color: #ffffff;
+		border-radius: 20% 20% 10% 10%;
+
+	}
+
+	/*Interface d'opinion du user (bouton likes et commentaire) / Interface for the user in session's opinion*/
+	#interfaceAvis
+	{
+		display : flex;
+		justify-content: space-between;
+		height : 11.3rem;
+		margin-bottom: 2rem;
+	}
+		/*Style lorsque l'utilisateur n'a pas encore laissé son avis / style for when the users has not commented or evaluated the product*/
+		.IntCom
+		{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			background-color: #ffffff;
+			flex:4;
+			padding-left: 1.3rem;
+			border-radius: 20% 0% 0% 0%;
+			border-bottom:  0.5rem solid #a31c1c
+		}
+		.IntLike 	
+		{
+			display : flex;
+			justify-content: center;
+			align-items: center;
+			background: linear-gradient(#ff0000, #a31c1c);
+			flex : 3;
+			border-radius: 0% 20% 0% 0%;
+			padding : 0.5rem;
+		}
+
+		#nbComm
+		{
+			margin-left: 1rem;
+			margin-right: 0.5rem;
+			font-size: 1.2rem;
+			font-weight: bold;
+			color: #595454;
+			text-align: center;
+		}
+
+		.boutonComm
+		{
+			font-family: sourcesanspro, Helvetica, Arial, sans-serif;
+			font-size:1.2em;
+			color : white;
+			background-color: #ff0000;
+			padding:auto;
+			border-radius: 0.67rem;
+			width : 12rem;
+			height: 4.7rem;
+			font-weight: bold;
+			margin-right: 2rem;
+
+		}
+
+
+		#boutonLike
+		{
+			height: 4rem;
+			width: 9rem;
+			background: url('../images/thumbup.png') no-repeat;
+			background-size: contain;
+			background-position: center;
+			background-color: #ffffff;
+			margin : 0.67rem;
+			margin-right: 0rem;
+			border-radius: 0.67rem 0px 0px 0.67rem;
+		}
+
+		#boutonDislike
+		{
+			height: 4rem;
+			width: 9rem;
+			background: url('../images/thumbdown.png') no-repeat;
+			background-size: contain;
+			background-position: center;
+			background-color: #ffffff;
+			margin : 0.67rem;
+			margin-left: 0rem;
+			border-radius: 0px 0.67rem 0.67rem 0px;
+		}
+
+		.boutSmartL
+		{
+			display: flex;
+			flex-direction: column-reverse;
+			align-items: flex-end;
+		}
+
+		.nbL
+		{
+			font-size: 1.3rem;
+			font-weight: bold;
+			color : #ffffff;
+			padding-right: 2.4rem;
+			padding-left: 2.4rem;	
+		}
+
+		/*Style lorsque l'utilisateur n'a pas encore laissé son avis / style for when the users has not commented or evaluated the product*/
+
+		.thumbBoxL
+		{
+			height: 4rem;
+			width: 9rem;
+			background: url('../images/TUgris.png') no-repeat;
+			background-size: contain;
+			background-position: center;
+			background-color: #ffffff;
+			margin : 0.67rem;
+			margin-right: 0rem;
+			border-radius:  0.67rem 0px 0px 0.67rem;
+		}
+
+		.thumbBoxD
+		{
+			height: 4rem;
+			width: 9rem;
+			background: url('../images/TDgris.png') no-repeat;
+			background-size: contain;
+			background-position: center;
+			background-color: #ffffff;
+			margin : 0.67rem;
+			margin-left: 0.07rem;
+			border-radius: 0px 0.67rem 0.67rem 0px;
+		}
+
+		.comDenied
+		{
+			font-family: sourcesanspro, Helvetica, Arial, sans-serif;
+			font-size:1.2em;
+			font-weight: bold;
+			display : flex;
+			background-color: #918787;
+			color : white;
+			text-align: center;
+			align-items: center;
+			justify-content: center;
+			border : 0.07rem solid #918787;
+			border-radius: 0.67rem;
+			padding:auto;
+			width : 12rem;
+			height: 4.7rem;
+			margin-right: 2rem;
+		}
+
+	/*Affichage des commentaires des utilisateurs / Displays users comments*/
+	.commentaires
+	{
+		padding: 0.67rem;
+		position: relative;
+	}
+		/*Style affichage commentaire unique / style for dsplaying a single comment*/
+		.auteur
+		{
+			font-weight: bold;
+		}
+		.date
+		{
+			font-style: italic; 
+		}
+		.commentaire
+		{
+			margin: 0.67rem;
+			margin-bottom: 1.3rem;
+			font-size: 1.3rem;
+		}
+
+		.separeCom 
+		{
+		    border: none;
+		    border-top: 0.2rem dashed #ff0000;
+		    color: #ff0000;
+		    overflow: visible;
+		    text-align: center;
+		    height: 0.3rem;
+		    width: 30%;
+		    margin-bottom: 1rem;
+		    margin-top: 1rem;
+		}
+
+
+/*STYLE DEDIE AUX FORMULAIRES / STYLE FOR THE SITE'S FORMS*/
+	
+	/*Stle par défaut des formulaires / Default style for forms*/
+	.form
+	{
+		padding-right: 0.67rem;
+		padding-left: 0.67rem;
+		padding-top: 4rem;
+		padding-bottom: 4rem;
+		color: #ffffff;
+		background-color: #595454;
+		margin : 0;
+	}
+
+	.blocForm
+	{
+		margin : 1.3rem;
+		margin-top: 0;
+	}
+
+	.champ
+	{
+		display: flex;
+		flex :1;
+		margin-bottom: 1.3rem;
+		margin-top: 0.6rem;
+	}
+	.champ label
+	{
+		padding-right: 0.67rem;
+	}
+	.champ input
+	{
+		flex:1;
+	}
+
+	.champCom input
+	{
+		width: 100%;
+	}
+
+	.champSeeA
+	{
+		margin : 3rem;
+		font-size: 3rem;
+		font-weight: bold;
+	}
+
+	/*Style page d'acceuil / style for index*/
+	#bandeauAccueil
+	{
+		background: linear-gradient(#ff0000, #a31c1c);
+		height: 5.2rem;
+		padding-left: 1.3rem;
+		padding-right: 1.3rem;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		margin-bottom: 3.3rem;
+	}
+
+	#txtBandeauAccueil
+	{
+		font-size: 2.67rem;
+		color : #ffffff;
+	}
+
+	#option2
+	{
+		display : flex;
+		justify-content: space-around;
+		width: 60%;
+		margin:auto;
+		margin-top: 6.7rem;
+	}
+
+	.boutonOp2
+	{
+		font-family: sourcesanspro, Helvetica, Arial, sans-serif;
+		font-size: 1.2em;
+		color : white;
+		background-color: #ff0000;
+		padding:auto;
+		border-radius: 0.3rem;
+		width : 10rem;
+		height: 4rem;
+		font-weight: bold;
+	}
+
+	#blocOubli
+	{
+		flex: 1;
+		margin-right: 2rem;
+	}
+	#blocCrea
+	{
+		flex: 1;
+		margin-left: 2rem;
+	}
+
+	#separeVert
+	{
+		border-left: 0.2rem double #ffffff;
+		height: 13.3rem;
+	}
+
+@media all and (min-width: 1024px) 
+{
+	#separeHori
+	{	
+		display: none;
+	}
+}
+
+
+
+
+
+@media (min-width: 768px) and (max-width: 1023px)/*Tablette*/
+{
+	/*STYLE TABLETTE FORMULAIRES / STYLE FORMS FOR TABLET*/
+	input/*agrandissement hauteur des champs de formulaire*/
+	{
+		height: 2.5em;
+	}
+
+	#separeVert
+	{
+		display: none;
+	}
+
+	/*STYLE PAGE LISTE ACTEUR / STYLE FOR ACTOR LIST PAGE*/
+	#listeActeurs
+	{
+		padding-right: 2%;
+		padding-left: 2%;
+	}
+
+	.partenaireTextuelle
+	{
+		flex: 2;
+		display: flex;
+		flex-direction: column;
+		border-left: double #918787 0.4rem;
+		margin-left: 0.5rem;
+	}
+
+	.txtActeur
+	{
+		margin-bottom: 1rem;
+		margin-left: 0.5rem;
+		margin-right: 0.5rem;
+		padding-left: 0;
+		padding-right: 0;
+		width: 97%
+	}
+
+	.logoPartenaire
+	{
+		flex: 1;
+		height: 100%;
+		padding-left: 1rem;
+	}
+
+	#logoPartenaire
+	{
+		max-width: 100%;
+		height: auto;
+		justify-content: center;
+	}
+
+	.acteur
+	{
+		border-radius: 0px 2.5rem 0px 0px;
+		padding: 0.3rem;
+		padding-right: 0.7rem;
+		padding-bottom: 0.7rem;
+	}
+
+	/*STYLE TABLETTE PAGE ACTEUR UNIQUE / STYLE PAGE SINGLE ACTORS FOR TABLET */
+	.prezActeur
+	{
+		font-size: 1.3rem;
+	}
+
+	#blocPartenaire
+	{
+		width: 80%;
+	}
+
+	#logoVueUnique
+	{
+		height: 10rem;
+	}
+
+	.lienActeur
+	{
+		width: 100%;
+	}
+
+	.boutonComm
+	{
+		width : 10rem;
+		margin-right: 2rem;
+	}
+
+	.comDenied
+	{
+		width : 10rem;
+		margin-right: 2rem;
+	}
+
+	.IntLike 	
+	{
+		padding-right: 0.5rem;
+		padding-left: 0.5rem;
+		border-radius: 0% 10% 0% 0%;
+	}
+
+	.IntCom
+	{
+		padding-left: 0.5rem;
+		border-radius: 10% 0% 0% 0%; 
+		flex-direction : column;
+		justify-content: space-around;
+	}
+
+	#boutonLike
+	{
+		width: 8rem;
+		margin : 0.67rem;
+		margin-right: 0rem;
+	}
+
+	#boutonDislike
+	{
+		width: 8rem;
+		margin : 0.67rem;
+		margin-left: 0rem;
+	}
+
+	.thumbBoxL
+	{
+		width: 8rem;
+		margin : 0.67rem;
+		margin-right: 0;
+		border-right: solid #918787 0.1rem;
+	}
+
+	.thumbBoxD
+	{
+		width: 8rem;
+		margin : 0.67rem;
+		margin-left: 0;
+		border-left: solid #918787 0.1rem;
+	}
+
+	#nbComm
+	{
+		margin-left: 0.5rem;
+		margin-right: 0.5rem;
+	}
+}
+
+@media (min-width: 300px) and (max-width: 767px)/*Smartphone*/
+{
+	/*STYLE LAYOUT SMARTPHONE*/
+	#LogoHeader
+	{
+		max-width: auto;
+		height: 3.5rem;
+		margin: auto;
+		padding-left: 2rem;
+	}
+
+	#logoUser 
+	{
+		width: 2rem;
+		height : 2rem;
+		margin-right:0.3rem;
+	}
+
+	#boutonDeco
+	{
+		width : 7rem;
+		font-size: 0.7rem;
+	}
+
+	#userSelf
+	{
+		font-size: 0.7rem;
+	}
+
+
+	/*STYLE SMARTPHONE FORMULAIRES / STYLE FORMS FOR SMARTPHONE */
+	.champ input /*agrandissement hauteur des champs de formulaire*/
+	{
+		padding-top : 1rem;
+		padding-bottom : 1rem;
+	}
+
+	.champ
+	{
+		flex-direction: column;
+	}
+
+	#option2
+	{
+		display : flex;
+		flex-direction: column;
+		width : 90%;
+
+	}
+
+	#separeVert
+	{
+		display: none;
+	}
+
+	#separeHori
+	{
+		border-top: 0.2rem double #ffffff;
+		text-align: center;
+		width : 18rem;
+		margin-top : 1.6rem;
+		margin-bottom : 1.6rem;
+	}
+
+	#txtBandeauAccueil
+	{
+		font-size: 1.4rem;
+	}
+
+	/*STYLE PAGE LISTE ACTEUR / STYLE FOR ACTOR LIST PAGE*/
+	.acteur
+	{
+		flex-direction: column;
+		border-radius: 0 0 0 0;
+		padding: 1rem;
+	}
+
+	.partenaireTextuelle
+	{
+		flex-direction: column;
+	}
+
+	.txtActeur
+	{
+		padding: 0;
+		margin-bottom: 1rem;
+	}
+
+	/*STYLE SMARTPHONE PAGE ACTEUR UNIQUE / STYLE PAGE SINGLE ACTORS FOR SMARTPHONE */
+	#blocPartenaire
+	{
+		margin-bottom: 4rem;
+	}
+
+	#logoVueUnique
+	{
+		height: 5rem;
+	}
+
+	#avis
+	{
+		border-radius: 0 0 0 0;
+		width: 95%
+	}
+
+	#interfaceAvis
+	{
+		flex-direction: column;
+		height: auto;
+	}
+
+	.boutonComm
+	{
+		width : 10rem;
+		margin-right: 0.2rem;
+		margin-left: 0.2rem;
+	}
+
+	.comDenied
+	{
+		width : 10rem;
+		margin-right: 0.2rem;
+		margin-left: 0.2rem;
+	}
+
+	.IntLike 	
+	{
+		border-radius: 0 0 0 0;
+		padding: auto;
+		justify-content: space-around;
+	}
+
+	.IntCom
+	{
+		padding-left: 0.5rem;
+		border-radius: 0 0 0 0; 
+		flex-direction : column;
+		justify-content: space-around;
+		border-color : #ffffff;
+		margin-bottom: 1.5rem;
+	}
+
+	.boutSmartL
+	{
+		display:flex;
+		flex-direction: column-reverse;
+		flex: 1;
+		margin: 0;
+		align-items: flex-end;
+	}
+
+	.boutSmartD
+	{
+		display:flex;
+		flex-direction: column;
+		flex : 1;
+		margin: 0;
+	}
+
+	.nbL
+	{
+		align-self: center;
+		margin-top: 0.2rem;
+	}
+
+	#boutonLike
+	{
+		width: 7rem;
+		margin: 0;
+		border-radius: 0.67rem 0px 0px 0.67rem;
+		
+	}
+
+	#boutonDislike
+	{
+		width: 7rem;
+		margin : 0;
+		border-radius: 0px 0.67rem 0.67rem 0px;
+	}
+
+	.thumbBoxL
+	{
+		width: 7rem;
+		margin: 0;
+		border-radius: 0.67rem 0px 0px 0.67rem;
+		border-right: solid #918787 0.1rem;
+	}
+
+	.thumbBoxD
+	{
+		width: 7rem;
+		margin : 0;
+		border-radius: 0px 0.67rem 0.67rem 0px;
+		border-left: solid #918787 0.1rem;
+	}
+
+	
+
+	#nbComm
+	{
+		margin-left: 0.5rem;
+		margin-right: 0.5rem;
+		margin-bottom: 0.5rem;
+		margin-top: 0.9rem;
+		font-size: 1.4rem;
+	}
+}
+
+
