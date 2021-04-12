@@ -27,7 +27,7 @@
                   <p> <a href="bootstrap.php?action=seeAccount"><span id="userSelf"><?=$_SESSION['userName']?></span></a></p>
               </div>
               <div id="decButton">
-                  <form method="post" action="disconnect.html">
+                  <form method="post" action="bootstrap.php?action=disconnect">
                   <button type="submit" id="boutonDeco">Déconnexion</button>
                   </form>
               </div>

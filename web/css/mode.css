@@ -621,6 +621,11 @@
 		height: 13.3rem;
 	}
 
+	#lienPartenaires
+	{
+		margin-bottom: 2rem;
+	}
+
 @media all and (min-width: 1024px) 
 {
 	#separeHori

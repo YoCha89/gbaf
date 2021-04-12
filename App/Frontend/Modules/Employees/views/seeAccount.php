@@ -14,6 +14,8 @@
 	<button type="submit" class="bouton">Mettre à jour</button>
 </form>
 
+<a href="bootstrap.php?action=showProducts"><div id="lienPartenaires">Consulter la liste des partenaires</div></a>
+
 
 
 

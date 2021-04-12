@@ -8,7 +8,7 @@ class EmployeesManagerPDO extends EmployeesManager
 	public function getEmployeePerId($id)
 	{
 		$sql =$this->dao->prepare('SELECT id, name, firstName, userName, pass, secretQ, secretA FROM employees WHERE id = :id');
-  		$sql->bindValue(':id', (int) $id, \PDO::PARAM_INT);
+  		$sql->bindValue(':id', (int)$id, \PDO::PARAM_INT);
 		$sql->execute();
 
 		$sql->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Employees');
@@ -68,7 +68,7 @@ class EmployeesManagerPDO extends EmployeesManager
     	$sql->bindValue(':pass', $employee->pass());
     	$sql->bindValue(':secretQ', $employee->secretQ());
     	$sql->bindValue(':secretA', $employee->secretA());
-    
+
     	$sql->execute();
     
     	$employee->setId($this->dao->lastInsertId());
@@ -78,16 +78,17 @@ class EmployeesManagerPDO extends EmployeesManager
 
 	public function updateEmployee(Employees $employee)
 	{
+		var_dump($employee);
 		$sql = $this->dao->prepare('UPDATE employees SET name = :name, firstName = :firstName, userName = :userName, pass = :pass, secretQ = :secretQ, secretA = :secretA WHERE id= :id');
     
-    	$sql->bindValue(':id', (int) $id, \PDO::PARAM_INT);
+    	$sql->bindValue(':id', $employee->id(), \PDO::PARAM_INT);
     	$sql->bindValue(':name', $employee->name());
     	$sql->bindValue(':firstName', $employee->firstName());
     	$sql->bindValue(':userName', $employee->userName());
     	$sql->bindValue(':pass', $employee->pass());
     	$sql->bindValue(':secretQ', $employee->secretQ());
     	$sql->bindValue(':secretA', $employee->secretA());
-    
+ 
     	$sql->execute();
 
     	$sql->closeCursor();

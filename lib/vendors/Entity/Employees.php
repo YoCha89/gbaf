@@ -5,19 +5,21 @@ use \OCFram\Entity;
 
 class Employees extends Entity
 {
-	protected $name,
+	protected $id,
+            $name,
             $firstName,
             $userName,
             $pass,
             $secretQ,
             $secretA;
 
-  const NOM_INVALIDE = 1;
-	const PRENOM_INVALIDE = 2;
-	const ALIAS_INVALIDE = 3;
-	const MOT_DE_PASSE_INVALIDE = 4;
-	const QUESTION_INVALIDE = 5;
-	const REPONSE_INVALIDE = 6;
+  const NOM_NON_VALIDE = 1;
+	const PRENOM_NON_VALIDE = 2;
+	const ALIAS_NON_VALIDE = 3;
+	const MOT_DE_PASSE_NON_VALIDE = 4;
+	const QUESTION_NON_VALIDE = 5;
+	const REPONSE_NON_VALIDE = 6;
+  const ID_NON_VALIDE = 7;
 
     public function isValid()
     {
@@ -25,6 +27,11 @@ class Employees extends Entity
     }
 
   // GETTERS //
+  public function id()
+  {
+    return $this->id;
+  }
+
   public function name()
   {
    return $this->name;
@@ -58,11 +65,22 @@ class Employees extends Entity
 
 
  // SETTERS //
+  public function setId($id)
+  {
+    if (!is_int($id) || empty($id))
+    {
+      $this->erreurs[] = self::ID_NON_VALIDE;
+    }
+
+    $this->id = $id;
+  }
+
+
   public function setName($name)
   {
     if (!is_string($name) || empty($name))
     {
-      $this->erreurs[] = self::NOM_INVALIDE;
+      $this->erreurs[] = self::NOM_NON_VALIDE;
     }
 
     $this->name = $name;
@@ -72,7 +90,7 @@ class Employees extends Entity
   {
     if (!is_string($firstName) || empty($firstName))
     {
-      $this->erreurs[] = self::PRENOM_INVALIDE;
+      $this->erreurs[] = self::PRENOM_NON_VALIDE;
     }
 
     $this->firstName = $firstName;
@@ -82,7 +100,7 @@ class Employees extends Entity
   {
     if (!is_string($userName) || empty($userName))
     {
-      $this->erreurs[] = self::ALIAS_INVALIDE;
+      $this->erreurs[] = self::ALIAS_NON_VALIDE;
     }
 
     $this->userName = $userName;
@@ -92,7 +110,7 @@ class Employees extends Entity
   {
     if (!is_string($pass) || empty($pass))
     {
-      $this->erreurs[] = self::MOT_DE_PASSE_INVALIDE;
+      $this->erreurs[] = self::MOT_DE_PASSE_NON_VALIDE;
     }
 
     $this->pass = $pass;
@@ -102,7 +120,7 @@ class Employees extends Entity
   {
     if (!is_string($secretQ) || empty($secretQ))
     {
-      $this->erreurs[] = self::QUESTION_INVALIDE;
+      $this->erreurs[] = self::QUESTION_NON_VALIDE;
     }
 
     $this->secretQ = $secretQ;
@@ -112,7 +130,7 @@ class Employees extends Entity
   {
     if (!is_string($secretA) || empty($secretA))
     {
-      $this->erreurs[] = self::REPONSE_INVALIDE;
+      $this->erreurs[] = self::REPONSE_NON_VALIDE;
     }
 
     $this->secretA = $secretA;

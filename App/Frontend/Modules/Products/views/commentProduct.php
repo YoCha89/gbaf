@@ -1,4 +1,4 @@
-<img src="<?=$product['logoUrl']?>" alt="logoPartenaireU" id="logoPartenaireU"/>
+<img src="<?=$product['logoUrl']?>" alt="logoPartenaireU" id="logoVueUnique"/>
 <h2><?= $product['title'] ?></h2>
 <a href=""></a>
 <p><?= nl2br($product['description'])?></p>

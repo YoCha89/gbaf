@@ -14,13 +14,14 @@ class FrontendApplication extends Application
  
   public function run()
   {
-    if ($this->httpRequest->getData('action') == 'index')
+
+    //Paramétrage des actions que l'on doit pouvoir effectuer hors connexion
+    if ($this->httpRequest->getData('action') == 'index' || $this->httpRequest->getData('action') == 'createAccount' || $this->httpRequest->getData('action') == 'updatePass')
     {
       $controller = $this->getController();
     }
-
-    //L'action index est naturellement exclue de la vérification de connexion
-    else if ($this->user->isAuthenticated())
+    
+    else if ($this->user->getAttribute('auth') == true)
     {
       $controller = $this->getController();
     }

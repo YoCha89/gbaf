@@ -14,7 +14,6 @@ class EmployeesController extends BackController
 		//on vérifie si le user arrive sur la page ou a envoyé le formulaire de connexion
 		if ($request->postExists('userName'))
     	{
-    	
 	     	$passEntered = $request->postData('pass');
 	    	$userNameEntered = $request->postData('userName');
 
@@ -24,11 +23,6 @@ class EmployeesController extends BackController
 	    	//Récupération des infos nécessaires en BDD
 	    	$employee = $managerE->getEmployeePerUsername($userNameEntered);
 	    	$registeredPass = $employee['pass'];
-
-
-    /*$test='ici';
-      var_dump($passEntered,$userNameEntered,$registeredPass);
-    die; */
 
 	    	//confirmation du mot de passe entré
 	    	if(password_verify($passEntered, $registeredPass))
@@ -142,8 +136,7 @@ class EmployeesController extends BackController
 				//Si le userName n'est pas nouveau, on regarde s'il correspond à l'ancien nom de l'utilisateur, sinon, il essaye d'utiliser un nouveau nom déja pris.
 				if ($request->postData('userName') == $employee['userName'])
 				{
-					$id = $employee['id'];
-					$pass = $employee['pass']; //la variable a été récupérée en BDD, le pass est déja crypté.
+					$pass = $employee['pass'];
 
 					//Fonction gérant les création et mise à jour de compte
 					$this->processForm($request, $pass, $managerE);
@@ -160,19 +153,18 @@ class EmployeesController extends BackController
 				}	
 			}
 
-			//si checkUsername a renvoyer un résultat vide, sachant que l'on a remplit les champs du formulaire par défaut, on sait que le username est nouveau et unique
+			//si checkUsername a renvoyer un résultat vide, sachant que l'on a remplit les champs du formulaire avec les valeurs existantes par défaut, on sait que le username est nouveau et unique
 			else
 			{
-				$id = $employee['id'];
 				$pass = $employee['pass']; //la variable a été récupérée en BDD, le pass est déja crypté.
 
 				//Fonction gérant les création et mise à jour de compte
-				$this->processForm($request);
+				$this->processForm($request, $pass, $managerE);
 
 				$this->app->user()->setFlash('Votre compte a bien été mis à jour !');
 
 				//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
-				$this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount;id='.$id);
+				$this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount');
 			}
 		}
 	}
@@ -223,9 +215,18 @@ class EmployeesController extends BackController
 	    else
 	    {
 	    	//Récupération des infos de l'utilisateur en BDD 
-	    	$employee = $managerE->getEmployeePerUserName($request->postData('userName'));
+	    	if (!empty ($request->postData('userName')))
+	    	{
+	    		$employee = $managerE->getEmployeePerUserName($request->postData('userName'));
+	    		$this->page->addVar('employee', $employee);
+	    	}
 
-	    	$this->page->addVar('employee', $employee);
+	    	else
+	    	{
+	    		$this->app->user()->setFlash('Entrez votre nom d\'utilisateur pour modifier votre mot de passe.');
+	    		$this->app->httpResponse()->redirect('bootstrap.php?action=index');
+	    	}
+	    	
 	    }
 	}
 
@@ -243,7 +244,7 @@ class EmployeesController extends BackController
 	//fonction permettant de poursuivre les processus de mises à jour ou création de compte utilisateur
 	public function processForm(HTTPRequest $request, $pass, $managerE)
   	{
-    	$employee = new Employees ([
+    	$formEmployee = new Employees ([
 	    'name' => $request->postData('name'),
 	    'firstName' => $request->postData('firstName'),
 	    'userName' => $request->postData('userName'),
@@ -252,28 +253,32 @@ class EmployeesController extends BackController
 	    'secretA' => $request->postData('secretA')
 		]);
 
-	    // L'identifiant de l'utilisateur est hydrayer en cas de mise à jour.
-	    if (isset($id))
+	    // L'identifiant de l'utilisateur est hydrater en cas de mise à jour.
+	    $idCheck = $this->app->user()->getAttribute('id');
+
+	    if (!empty($idCheck))
 	    {
-	      $employee->setId($id);
+	      $formEmployee->setid($idCheck);
 	    }
-	 
-	    if ($employee->isValid())
+	    /*$check=$formEmployee->id();var_dump($request->postData('name'), $formEmployee, $idCheck, $check);
+	    die;*/
+
+	    if ($formEmployee->isValid())
 		{
-			$managerE->saveEmployee($employee);
+			$managerE->saveEmployee($formEmployee);
 
 			//Une fois le compte créé/mis à jour, on connecte automatiquement l'utilisateur avec les mêmes étapes
 			$this->app->user()->setAuthenticated(true);
 
-			$this->app->user()->setAttribute('id', $employee['id']);
-			$this->app->user()->setAttribute('firstName', $employee['firstName']);
-			$this->app->user()->setAttribute('userName', $employee['userName']);
+			$this->app->user()->setAttribute('id', $formEmployee['id']);
+			$this->app->user()->setAttribute('firstName', $formEmployee['firstName']);
+			$this->app->user()->setAttribute('userName', $formEmployee['userName']);
 		}
 
 	    else
 		{
 			//on ajoute l'erreur paramétrée de l'entité sur la vue
-			$this->page->addVar('erreurs', $employee->erreurs());
+			$this->page->addVar('erreurs', $formEmployee->erreurs());
 		}
 	}
 }

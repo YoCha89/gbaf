@@ -33,13 +33,13 @@ class User extends ApplicationComponent
     $_SESSION[$attr] = $value;
   }
  
-  public function setAuthenticated($authenticated = true)
+  public function setAuthenticated($authenticated)
   {
     if (!is_bool($authenticated))
     {
       throw new \InvalidArgumentException('La valeur spécifiée à la méthode User::setAuthenticated() doit être un boolean');
     }
- 
+
     $_SESSION['auth'] = $authenticated;
   }
  
@@ -50,6 +50,7 @@ class User extends ApplicationComponent
 
   public function destroy()
   {
+    $_SESSION=array();
     session_destroy();
   }
 }
