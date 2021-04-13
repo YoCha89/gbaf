@@ -22,11 +22,11 @@ class LikesManagerPDO extends LikesManager
 			{
 				if ($singleIds['employeeId'] != $employeeId)
 				{
-					$evaluate="allow";
+					$evaluate="allow";//si on ne trouve pas de match, l'utilisateur n'a jamais commenté le produit
 				}
 				else
 				{
-					$evaluate="forbid";
+					$evaluate="forbid";//au premier match, on sait que le commentaire est déja entré
 					break;
 				}
 			}
@@ -34,7 +34,7 @@ class LikesManagerPDO extends LikesManager
 
 		else
 		{
-			$evaluate="allow";
+			$evaluate="allow";//cas prévu pour le premier like/dislike
 		}
 
 		return $evaluate;
@@ -55,7 +55,7 @@ class LikesManagerPDO extends LikesManager
 
 	public function countLikes($productId)
 	{
-		$sql = $this->dao->prepare('SELECT COUNT(*) FROM likes WHERE productId = :productId AND verdict = "O"'); //Rappel : si l'utilisateur like un produit, la valeur 1 est entrée. En cas de dislike, c'est le 0.
+		$sql = $this->dao->prepare('SELECT COUNT(*) FROM likes WHERE productId = :productId AND verdict = "O"'); //Rappel : si l'utilisateur like un produit, la valeur "O" est entrée. En cas de dislike, c'est "N".
 		$sql->bindValue(':productId', (int)  $productId, \PDO::PARAM_INT);
 		$sql->execute();
     
@@ -63,7 +63,7 @@ class LikesManagerPDO extends LikesManager
 
     	if (empty($likeNumber))
     	{
-    		$likeNumber=0;
+    		$likeNumber=0;//permet l'autorisation lors du premier like/dislike sur le produit
     	}
     
     	$sql->closeCursor();
@@ -80,8 +80,6 @@ class LikesManagerPDO extends LikesManager
     	$sql->bindValue(':verdict', $like->verdict());
     
     	$sql->execute();
-    
-    	$like->setId($this->dao->lastInsertId());
 
     	$sql->closeCursor();
 	}

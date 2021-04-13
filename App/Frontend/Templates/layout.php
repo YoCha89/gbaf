@@ -18,6 +18,7 @@
               <img src="images/LogoGBAF.png" alt="LogoGBAF" id="LogoHeader"/>
             </div>
             <?php
+            //affichage dynamique du bloc compte utilisateur en cas de connexion
             if ($_SESSION['auth'] == true)
             {
             ?>
@@ -41,7 +42,7 @@
 
      <div id="content-wrap">
         <section id="main">
-          <?php if ($user->hasFlash()) echo '<p style="text-align: center;">', $user->getFlash(), '</p>'; ?>
+          <?php if ($user->hasFlash()) echo '<p style="text-align: center;">', $user->getFlash(), '</p>';//Affichage des feedbacks utilisateurs pour confirmer la réussite d'une requête ou lui permettre de corriger ses erreurs ?>
           
           <?= $content ?>
         </section>
@@ -53,9 +54,9 @@
       <table id="menuFoot">
         <tbody>
           <tr>
-            <td data-align="center"><a href="#propos" class="lienMenu">Mentions Légales</a></td>
+            <td data-align="center"><a href="" class="lienMenu">Mentions Légales</a></td>
             <td data-align="center">|</td>
-            <td data-align="center"><a href="#competence" class="lienMenu">Contact</a></td>
+            <td data-align="center"><a href="" class="lienMenu">Contact</a></td>
           </tr>
         </tbody>
       </table>

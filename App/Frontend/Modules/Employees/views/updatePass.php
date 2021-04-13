@@ -13,7 +13,7 @@
 			<input type="password" name="ConfNewPass">
 			</div>
 
-			<p>Question secrète : <?= nl2br(htmlspecialchars($employee['secretQ'])) ?></p>
+			<p>Question secrète : <?= nl2br(htmlspecialchars($employee['secretQ'])) ?></p><!--Affichage de la question secrète-->
 			<div class="champ">
 			<label for="secretA">Entrez votre réponse secrète : </label>
 			<input type="text" name="secretA">

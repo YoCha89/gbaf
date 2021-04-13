@@ -15,9 +15,10 @@ abstract class Application
     $this->httpResponse = new HTTPResponse($this);
     $this->user = new User($this);
    
-    $this->name = 'Frontend';//Une seule option car nous ne développons que le frontend
+    $this->name = 'Frontend';//Cette variable n'est pas dynamique car nous ne développons que le frontend
   }
 
+  //Méthode pour instancier le controlleur gérant l'action de la requête
   public function getController()
   {
 

@@ -40,7 +40,7 @@
 					echo('<div class="commentaire">
 							<p><span class="auteur">'.$comment['author'].'</span><br/>
 							<span class="date">'.$comment['creationDate']->format('d/m/Y à H\hi').'</span><br/><br/>
-							<span class="commentaire">'.nl2br($comment['content']).'</span>
+							<span class="commentaire">'.nl2br(htmlspecialchars($comment['content'])).'</span>
 							<hr class="separeCom"></p>
 						</div>');
 				}

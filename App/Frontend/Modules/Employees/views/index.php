@@ -4,7 +4,7 @@
 
 	<div class="form">
 		<div class="blocForm">
-			<form method="post" action="bootstrap.php?action=index">
+			<form method="post" action="bootstrap.php?action=index"><!--Bloc de connexion-->
 				<div class="champ">
 					<label for="userName">Nom d'utilisateur :</label>
 					<input type="text" name="userName"><br/>
@@ -18,7 +18,7 @@
 		</div>
 
 		<div id="option2">
-			<div id="blocOubli">
+			<div id="blocOubli"><!--Bloc de mise à jour du mot de passe-->
 				<p>En cas d'oublie, entrez votre nom d'utilisateur avant de valider</p><br/>
 				<form method="post" action="bootstrap.php?action=updatePass">
 					<div class="champ">
@@ -33,7 +33,7 @@
 			<hr id="separeHori">
 		
 				
-			<div id="blocCrea">
+			<div id="blocCrea"><!--Bloc de création de compte-->
 				<p>Vous n'avez pas encore de compte ?</p><br/>
 				<p>Créez votre compte dès maintenant !</p><br/>
 				<form method="post" action="bootstrap.php?action=createAccount">

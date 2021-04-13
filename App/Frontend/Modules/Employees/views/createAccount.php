@@ -36,7 +36,7 @@
 
 			<hr>
 
-			<p>Si vous perdez votre mot de passe, vous aurez besoin de votre nom d'utilisateur et de votre réponse secrète pour le récupérer. Assurez-vous de les conserver.</p><br/>
+			<p>Si vous perdez votre mot de passe, vous aurez besoin de votre nom d'utilisateur et de votre réponse secrète pour le récupérer. Assurez-vous de les conserver. La réponse prend en compte les espaces en fin de chaine.</p><br/>
 
 			<?= isset($erreurs) && in_array(\Entity\Employees::QUESTION_INVALIDE, $erreurs) ? 'Veuillez saisir votre question secrète à nouveau (et si besoin, la réponse qui concorde).<br />' : '' ?>
 			<div class="champ">

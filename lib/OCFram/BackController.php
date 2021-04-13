@@ -19,7 +19,8 @@ abstract class BackController extends ApplicationComponent
     $this->setAction($action);
     $this->setView($action);
   }
- 
+  
+  //Méthode identifiant et lançant l'éxécution de la fonction du controller correspondant à l'action de la requête
   public function execute()
   {
     $method = 'execute'.ucfirst($this->action);

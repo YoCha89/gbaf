@@ -85,7 +85,7 @@
 
 
 /*MISE EN FORME LAYOUT (HEADER ET FOOTER) / LAYOUT STYLE (HEADER AND FOOTER) */
-	/*Capsule de tout le header / Blox trapping the whole hearder*/
+	/*Capsule de tout le header / Box trapping the whole hearder*/
 	#tete 
 	{
 		display: flex;

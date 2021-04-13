@@ -21,24 +21,19 @@ class CommentsManagerPDO extends CommentsManager
 			{
 				if ($singleIds['employeeId'] != $employeeId)
 				{
-					$commented='allow';
+					$commented='allow';//si on ne trouve pas de match, l'utilisateur n'a jamais commenté le produit
 				}
 				else
 				{
-					$commented='forbid';
+					$commented='forbid';//au premier match, on sait que le commentaire est déja entré
 					break;
 				}
 			}
-
-				/*
-		$test="ici";
-		var_dump($employeesIds, $employeeId, $commented);
-		die;*/
 		}
 
 		else
 		{
-			$commented='allow';
+			$commented='allow';//cas prévu pour le premier commentaire
 		}
 
 		return $commented;

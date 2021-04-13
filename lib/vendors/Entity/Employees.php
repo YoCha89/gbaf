@@ -5,8 +5,7 @@ use \OCFram\Entity;
 
 class Employees extends Entity
 {
-	protected $id,
-            $name,
+	protected $name,
             $firstName,
             $userName,
             $pass,
@@ -19,7 +18,6 @@ class Employees extends Entity
 	const MOT_DE_PASSE_NON_VALIDE = 4;
 	const QUESTION_NON_VALIDE = 5;
 	const REPONSE_NON_VALIDE = 6;
-  const ID_NON_VALIDE = 7;
 
     public function isValid()
     {
@@ -27,11 +25,6 @@ class Employees extends Entity
     }
 
   // GETTERS //
-  public function id()
-  {
-    return $this->id;
-  }
-
   public function name()
   {
    return $this->name;
@@ -65,17 +58,6 @@ class Employees extends Entity
 
 
  // SETTERS //
-  public function setId($id)
-  {
-    if (!is_int($id) || empty($id))
-    {
-      $this->erreurs[] = self::ID_NON_VALIDE;
-    }
-
-    $this->id = $id;
-  }
-
-
   public function setName($name)
   {
     if (!is_string($name) || empty($name))

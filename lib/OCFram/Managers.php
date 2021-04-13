@@ -13,6 +13,7 @@ class Managers
     $this->dao = $dao;
   }
  
+ //méthode cherchant le model correspondant au module dans lequel intervient l'action de la requête
   public function getManagerOf($module)
   {
     if (!is_string($module) || empty($module))

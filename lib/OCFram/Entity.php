@@ -13,7 +13,7 @@ abstract class Entity implements \ArrayAccess
       $this->hydrate($donnees);
     }
   }
- 
+
   public function isNew()
   {
     return empty($this->id);
@@ -23,16 +23,17 @@ abstract class Entity implements \ArrayAccess
   {
     return $this->erreurs;
   }
- 
+
+
   public function id()
   {
     return $this->id;
   }
- 
   public function setId($id)
   {
     $this->id = (int) $id;
   }
+ 
  
   public function hydrate(array $donnees)
   {

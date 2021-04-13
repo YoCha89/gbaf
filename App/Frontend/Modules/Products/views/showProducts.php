@@ -20,7 +20,7 @@
 
 	<div id="listeActeurs">
 		<?php
-		foreach ($listProducts as $products)
+		foreach ($listProducts as $products)//On liste les produits
 		{
 		?>
 		<div class="acteur">

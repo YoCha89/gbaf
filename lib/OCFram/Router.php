@@ -15,7 +15,7 @@ class Router
       {
         $action = 'index';
         $module = 'Employees';
-        $var = null;
+        $var = null;//Setup à nulle pour la création de la route. C'est le controller, quel que soit la route, qui se chargera des variables éventuelles 
         $matchedRoute = new Route ($module, $action, $var);
         return $matchedRoute;
       }

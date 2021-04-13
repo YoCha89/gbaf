@@ -8,10 +8,10 @@ use \Entity\Employees;
 
 class EmployeesController extends BackController
 {
-	//formulaire de connexion en guise d'entrée pour l'application. Etablissement des variables de session. Retour sur index avec message d'erreur si co à échoué, Redirection showproduct si ok
+	//formulaire de connexion en guise d'entrée pour l'application. 
 	public function executeIndex (HTTPRequest $request)
 	{
-		//on vérifie si le user arrive sur la page ou a envoyé le formulaire de connexion
+		//on vérifie si le user arrive sur le site ou si un formulaire de connexion a été envoyé 
 		if ($request->postExists('userName'))
     	{
 	     	$passEntered = $request->postData('pass');
@@ -27,16 +27,17 @@ class EmployeesController extends BackController
 	    	//confirmation du mot de passe entré
 	    	if(password_verify($passEntered, $registeredPass))
 		    {
-			    //setup de l'indicateur de connexion effective
+			    //setup de l'indicateur de confirmation de connexion
 			    $this->app->user()->setAuthenticated(true);
 
 			    //Etablissement des supervariables de session dont nous aurons usage
 				$this->app->user()->setAttribute('id', $employee['id']);
 			    $this->app->user()->setAttribute('userName', $employee['userName']);
 			    $this->app->user()->setAttribute('firstName', $employee['firstName']);
+
 			    $this->app->user()->setFlash('Vous êtes connecté, nous sommes ravis de votre retour !');
 
-			    //Redirection en cas de connexion
+			    //Redirection en cas de connexion réussie
 			    $this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');
 		    }
 
@@ -52,11 +53,11 @@ class EmployeesController extends BackController
 	public function executeCreateAccount (HTTPRequest $request)
 	{
 	    $this->page->addVar('title', 'Création du compte');
-	    
+
 		//Obtention du manager des salariés
 	    $managerE = $this->managers->getManagerOf('Employees');
 
-		//Vérification des champs du formulaire
+		//Vérification des champs du formulaire pour savoir si le formulaire a été envoyé
 		if ($request->postExists('name'))
 		{
 			//Vérification de la disponibilité de l'alias
@@ -86,7 +87,7 @@ class EmployeesController extends BackController
 
 			   		$this->app->user()->setFlash('Votre compte a été créé, bienvenue sur le portail salarié de la GBAF !');
 
-			   		$this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');
+			   		$this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');//redirection page des partenaires
 				}
 			}
 		}
@@ -101,7 +102,7 @@ class EmployeesController extends BackController
     	//Obtention du manager des salariés
 	    $managerE = $this->managers->getManagerOf('Employees');
 
-	    //Récupération des infos nécessaires en BDD
+	    //Récupération des infos nécessaires en BDD. Rappel : user gère les variables de session 
 	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute('id'));
 
 	    //ajout des infos sur la page
@@ -120,23 +121,23 @@ class EmployeesController extends BackController
 	    //Récupération des infos en BDD de l'utilisateur connecté 
 	    $employee = $managerE->getEmployeePerId($this->app->user()->getAttribute('id'));
 
-		//Si le champs "name" n'est pas rempli via le formulaire, l'utilisateur vient d'arriver, il faut remplir les champs par défaut
+		//Si le champs "name" n'est pas rempli via le formulaire, l'utilisateur vient d'arriver, il faut remplir les champs par défaut avec les valeurs existantes
 		if (empty ($request->postData('name')))
 		{
 	    	//ajout des infos sur la page
 	    	$this->page->addVar('employee', $employee);
 		}
 		
-		//Si le champs "name" est complété à l'éxécution de updateAccount, l'utilisateur a envoyé le formulaire à jour
+		//Si le champs "name" est complété à l'éxécution de updateAccount, l'utilisateur a envoyé le formulaire
 		else
 		{
 			//Avant de mettre à jour, on s'assure d'avoir un nom d'utilisateur unique. On regarde d'abord si c'est un nouveau userName
 			if (!empty ($managerE->checkUserName($request->postData('userName'))))
 			{
-				//Si le userName n'est pas nouveau, on regarde s'il correspond à l'ancien nom de l'utilisateur, sinon, il essaye d'utiliser un nouveau nom déja pris.
+				//Si le userName n'est pas nouveau, on regarde s'il correspond à l'ancien nom de l'utilisateur. Sinon, il essaye d'utiliser un nouveau nom déja pris.
 				if ($request->postData('userName') == $employee['userName'])
 				{
-					$pass = $employee['pass'];
+					$pass = $employee['pass'];//la variable a été récupérée en BDD, le pass est déja crypté.
 
 					//Fonction gérant les création et mise à jour de compte
 					$this->processForm($request, $pass, $managerE);
@@ -170,7 +171,7 @@ class EmployeesController extends BackController
 	}
 
 
-	//Mise à jour du mot de passe en cas d'oubli. Si postexist, process et redirection. Sinon, affichage formulaire. Message d'erreur à prévoir
+	//Mise à jour du mot de passe en cas d'oubli.
 	public function executeUpdatePass (HTTPRequest $request)
 	{
 		$this->page->addVar('title', 'Mise à jour du mot de passe');
@@ -178,7 +179,7 @@ class EmployeesController extends BackController
 		//Obtention du manager des salariés
 	    $managerE = $this->managers->getManagerOf('Employees'); 
 
-		//Si le champs "newPass" est rempli on lance le script de mise à jour en BDD
+		//Si le champs "newPass" est rempli, l'utilisateur est intervenu sur le formulaire et on lance le script de mise à jour en BDD
 		if ($request->postExists('newPass'))
 		{
 			$employee = $managerE->getEmployeePerUserName($request->postData('userName'));
@@ -231,7 +232,7 @@ class EmployeesController extends BackController
 	}
 
 
-	//Déconnexion de la session, redirection vers index
+	//Déconnexion de la session, redirection vers l'accueil
 	public function executeDisconnect (HTTPRequest $request)
 	{
 		$this->app->user()->setAuthenticated(false);
@@ -241,7 +242,7 @@ class EmployeesController extends BackController
 	}
 
 
-	//fonction permettant de poursuivre les processus de mises à jour ou création de compte utilisateur
+	//fonction permettant complétant les processus de mises à jour ou création de compte utilisateur. Les deux actions sont liées ^par cette partie de code en commun
 	public function processForm(HTTPRequest $request, $pass, $managerE)
   	{
     	$formEmployee = new Employees ([
@@ -253,21 +254,18 @@ class EmployeesController extends BackController
 	    'secretA' => $request->postData('secretA')
 		]);
 
-	    // L'identifiant de l'utilisateur est hydrater en cas de mise à jour.
+	    // Si l'id existe, nous sommes dans un cas de mise à jour. L'identifiant de l'utilisateur est hydrater. 
 	    $idCheck = $this->app->user()->getAttribute('id');
-
 	    if (!empty($idCheck))
 	    {
-	      $formEmployee->setid($idCheck);
+	      $formEmployee->setId($idCheck);
 	    }
-	    /*$check=$formEmployee->id();var_dump($request->postData('name'), $formEmployee, $idCheck, $check);
-	    die;*/
 
 	    if ($formEmployee->isValid())
 		{
-			$managerE->saveEmployee($formEmployee);
+			$managerE->saveEmployee($formEmployee);//Cette méthode va séparer à nouveau les chemin de la création et la mise à jour pour les managers
 
-			//Une fois le compte créé/mis à jour, on connecte automatiquement l'utilisateur avec les mêmes étapes
+			//Une fois le compte créé/mis à jour, on connecte automatiquement l'utilisateur avec les mêmes étapes qu'à la connexion.
 			$this->app->user()->setAuthenticated(true);
 
 			$this->app->user()->setAttribute('id', $formEmployee['id']);

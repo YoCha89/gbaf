@@ -6,6 +6,7 @@ class Page extends ApplicationComponent
   protected $contentFile;
   protected $vars = [];
  
+ //ajoute les variables propres à la requête pour affichage
   public function addVar($var, $value)
   {
     if (!is_string($var) || is_numeric($var) || empty($var))
@@ -16,6 +17,7 @@ class Page extends ApplicationComponent
     $this->vars[$var] = $value;
   }
  
+ //Construit la page finale répondant à la requête de l'utilisateur. Les variables sont inclues dans la vue (c'est le content) que l'on insère dans le layout général
   public function getGeneratedPage()
   {
     if (!file_exists($this->contentFile))

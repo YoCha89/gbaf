@@ -2,7 +2,8 @@
 namespace OCFram;
  
 session_start();
- 
+
+//Les méthodes de la classe user permet la gestion des variables de session
 class User extends ApplicationComponent
 {
   public function getAttribute($attr)

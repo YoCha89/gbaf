@@ -11,7 +11,7 @@ class Comments extends Entity
             $content,
             $creationDate;
 
-  //Seul le contenu est entré par l'utilisateur. Le reste est automatique
+  //Seul le contenu est entré par l'utilisateur. Le reste est automatisé
   const CONTENU_INVALIDE = 1;
 
     public function isValid()

@@ -1,8 +1,10 @@
+<!--Affichage du produit que l'on commente-->
 <img src="<?=$product['logoUrl']?>" alt="logoPartenaireU" id="logoVueUnique"/>
 <h2><?= $product['title'] ?></h2>
 <a href=""></a>
-<p><?= nl2br($product['description'])?></p>
+<p><?= nl2br(htmlspecialchars($product['description']))?></p>
 
+<!--Affichage formulaire-->
 <div class="form">
 	<div class="blocForm">
 		<form method="post" action="bootstrap.php?action=commentProduct&id=<?= $product['id']?>">

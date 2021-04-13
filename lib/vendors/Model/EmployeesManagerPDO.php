@@ -60,6 +60,9 @@ class EmployeesManagerPDO extends EmployeesManager
 
 	public function addEmployee(Employees $employee)
 	{
+		/*$test="add";
+		var_dump($test);
+		die;*/
 		$sql = $this->dao->prepare('INSERT INTO employees SET name = :name, firstName = :firstName, userName = :userName, pass = :pass, secretQ = :secretQ, secretA = :secretA');
     
     	$sql->bindValue(':name', $employee->name());
@@ -78,7 +81,9 @@ class EmployeesManagerPDO extends EmployeesManager
 
 	public function updateEmployee(Employees $employee)
 	{
-		var_dump($employee);
+		/*$test="up";
+		var_dump($test);
+		die;*/
 		$sql = $this->dao->prepare('UPDATE employees SET name = :name, firstName = :firstName, userName = :userName, pass = :pass, secretQ = :secretQ, secretA = :secretA WHERE id= :id');
     
     	$sql->bindValue(':id', $employee->id(), \PDO::PARAM_INT);

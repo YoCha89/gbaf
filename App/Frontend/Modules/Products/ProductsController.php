@@ -24,6 +24,7 @@ class ProductsController extends BackController
         $this->page->addVar('listProducts', $listProducts);
 	}
 
+    //Affichage d'une page de produit unique
 	public function executeShowProduct (HTTPRequest $request)
 	{
     	//Obtention des managers nécessaires (produits, likes, commentaires). Les infos nécessaires de l'utilisateurs sont dans les supervariables de session.
@@ -33,17 +34,19 @@ class ProductsController extends BackController
 
     	//Récupération des données nécessaires en BDD - La gestion du like unique et commentaire unique par utilisateur est géré séparemment pour les 2 entités
 
-		//le produit concerné
+		//Récupération du produit concerné
 		$product = $managerP->getUnique($request->getdata('id'));
 
 		//Gestion des informations relatives aux likes/dislikes du produit 
-		$verdicts = $managerL-> countVerdicts($request->getdata('id'));
-		$likes = $managerL-> countLikes($request->getdata('id'));
-		$dislikes = (int)$verdicts[0]-(int)$likes[0];
+    		//Décompte likes et dislikes
+            $verdicts = $managerL-> countVerdicts($request->getdata('id'));
+    		$likes = $managerL-> countLikes($request->getdata('id'));
+    		$dislikes = (int)$verdicts[0]-(int)$likes[0];
 
+        //Vérification de l'entré d'une opinion par l'utilisateur. Selon le résultat, une interface html autorisant ou empêchant l'expression d'une opinion est affichée sur la vue 
 		$allowLike = $managerL-> allowLike($request->getdata('id'), $this->app->user()->getAttribute('id'));
 
-        if ($allowLike == "allow")
+        if ($allowLike == "allow")//interface avec bouton cliquable
         {
             $likeOption = '<div class="IntLike">
                                 <div class=boutSmartL>
@@ -60,7 +63,7 @@ class ProductsController extends BackController
                                 </div>
                             </div>';
          }
-        else
+        else//interface avec bouton "mort"
         {
             $likeOption = '<div class="IntLike">
                                     <div class=boutSmartL>
@@ -75,12 +78,13 @@ class ProductsController extends BackController
         }
 
 		//Gestion des informations relatives aux commentaires du produit 
-		$listComments = $managerC-> getComments($request->getdata('id'));
-        $commentsNumber = $managerC-> countComments($request->getdata('id'));
+		$listComments = $managerC-> getComments($request->getdata('id'));//Récupération des commentaires du produit
+        $commentsNumber = $managerC-> countComments($request->getdata('id'));//décompte des commentaires
 
+        //Vérification de l'entré d'un commentaire par l'utilisateur. Selon le résultat, une interface html autorisant ou empêchant l'entrée d'un commentaire est affichée sur la vue 
 		$allowComment = $managerC-> allowComment($request->getdata('id'), $this->app->user()->getAttribute('id'));
         
-        if ($allowComment == 'allow')
+        if ($allowComment == 'allow')//interface avec bouton commentaire cliquable
         {
             $commentOption = '<div class=IntCom>
                 <div id="nbComm">'.$commentsNumber[0].'<br/>commentaires</div>
@@ -90,7 +94,7 @@ class ProductsController extends BackController
                 </div>';
         }
          
-        else
+        else// Interface bouton "mort"
         {
             $commentOption = '<div class=IntCom>
                     <div id="nbComm">'.$commentsNumber[0].'<br/>commentaires</div>
@@ -130,7 +134,7 @@ class ProductsController extends BackController
 
     public function executeCommentProduct (HTTPRequest $request)
     {
-        //la présence d'un commentaire rédigé en méthode post permet de savoir si l'utilisateur à déja écris le commentaire ou s'il doit accéder au formulaire de commentaire
+        //la présence d'un commentaire rédigé en méthode post permet de savoir si l'utilisateur à déja écris le commentaire ou s'il doit accéder au formulaire
         if ($request->postExists('content'))
         {
             //Création du nouveau commentaire
@@ -168,7 +172,6 @@ class ProductsController extends BackController
         {
             $managerP = $this->managers->getManagerOf('Products');
 
-            //le produit concerné
             $product = $managerP->getUnique($request->getdata('id'));
             $salId = $this->app->user()->getAttribute('id');
             $firstName = $this->app->user()->getAttribute('firstName');

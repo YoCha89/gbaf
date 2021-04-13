@@ -11,7 +11,6 @@ class Likes extends Entity
 
 //Pas de constante d'erreur. Les id sont automatiques et le verdict est décidé par un "click" et non une entrée textuelle.
 
-
   // GETTERS //
   public function employeeId()
   {

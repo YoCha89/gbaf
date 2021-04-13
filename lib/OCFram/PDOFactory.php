@@ -1,6 +1,7 @@
 <?php
 namespace OCFram;
- 
+
+//classe gérant l'API PDO pour communiquer avec la base de données.  
 class PDOFactory
 {
   public static function getMysqlConnexion()
