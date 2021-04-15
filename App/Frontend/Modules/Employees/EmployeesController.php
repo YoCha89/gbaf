@@ -84,10 +84,6 @@ class EmployeesController extends BackController
 					//Fonction gérant les création et mise à jour de compte
 
 					$this->processForm($request, $pass, $managerE);
-
-			   		$this->app->user()->setFlash('Votre compte a été créé, bienvenue sur le portail salarié de la GBAF !');
-
-			   		$this->app->httpResponse()->redirect('bootstrap.php?action=showProducts');//redirection page des partenaires
 				}
 			}
 		}
@@ -141,11 +137,6 @@ class EmployeesController extends BackController
 
 					//Fonction gérant les création et mise à jour de compte
 					$this->processForm($request, $pass, $managerE);
-
-					$this->app->user()->setFlash('Votre compte a bien été mis à jour !');
-
-					//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
-					$this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount'); 
 				}
 
 				else
@@ -161,11 +152,6 @@ class EmployeesController extends BackController
 
 				//Fonction gérant les création et mise à jour de compte
 				$this->processForm($request, $pass, $managerE);
-
-				$this->app->user()->setFlash('Votre compte a bien été mis à jour !');
-
-				//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
-				$this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount');
 			}
 		}
 	}
@@ -177,13 +163,19 @@ class EmployeesController extends BackController
 		$this->page->addVar('title', 'Mise à jour du mot de passe');
 
 		//Obtention du manager des salariés
-	    $managerE = $this->managers->getManagerOf('Employees'); 
+	    $managerE = $this->managers->getManagerOf('Employees');
+	    $employee = $managerE->getEmployeePerUserName($request->postData('userName'));
+
+	    //On vérifie que le userName existe (soit, que le comte existe)
+	    if (empty($employee))
+	    {
+	    	$this->app->user()->setFlash('Ce nom d\'utilisateur n\'existe pas.');
+	    	$this->app->httpResponse()->redirect('bootstrap.php?action=index');
+	    }
 
 		//Si le champs "newPass" est rempli, l'utilisateur est intervenu sur le formulaire et on lance le script de mise à jour en BDD
 		if ($request->postExists('newPass'))
 		{
-			$employee = $managerE->getEmployeePerUserName($request->postData('userName'));
-
 			//Vérification de la réponse secrète de l'utilisateur
 			if ($request->postData('secretA') == $employee['secretA'])
 			{
@@ -191,6 +183,7 @@ class EmployeesController extends BackController
 				if ($request->postData('newPass') != $request->postData('ConfNewPass'))
 				{
 					$this->app->user()->setFlash('Vous avez saisie 2 mots de passe différents.');
+					$this->app->httpResponse()->redirect('bootstrap.php?action=index');
 				}
 
 				else
@@ -209,6 +202,7 @@ class EmployeesController extends BackController
              else
 	        {
 	        	$this->app->user()->setFlash('Vous n\'avez pas entré la bonne réponse à votre question secrète.');
+	        	$this->app->httpResponse()->redirect('bootstrap.php?action=index');
 	        }
 	    }
 
@@ -245,6 +239,7 @@ class EmployeesController extends BackController
 	//fonction permettant complétant les processus de mises à jour ou création de compte utilisateur. Les deux actions sont liées ^par cette partie de code en commun
 	public function processForm(HTTPRequest $request, $pass, $managerE)
   	{
+
     	$formEmployee = new Employees ([
 	    'name' => $request->postData('name'),
 	    'firstName' => $request->postData('firstName'),
@@ -259,11 +254,14 @@ class EmployeesController extends BackController
 	    if (!empty($idCheck))
 	    {
 	      $formEmployee->setId($idCheck);
+	      $flashInd="id";//indicateur de mise à jour pour le setup du message flash ci-dessous.
 	    }
 
 	    if ($formEmployee->isValid())
 		{
-			$managerE->saveEmployee($formEmployee);//Cette méthode va séparer à nouveau les chemin de la création et la mise à jour pour les managers
+			$managerE->saveEmployee($formEmployee);//Cette méthode va séparer à nouveau les chemin de la création et la mise à jour dans le manager
+
+			$this->app->user()->setFlash(!empty($flashInd) ? 'Votre compte a été mis à jour !' : 'Votre compte a été créé, bienvenue sur le portail salarié de la GBAF !');
 
 			//Une fois le compte créé/mis à jour, on connecte automatiquement l'utilisateur avec les mêmes étapes qu'à la connexion.
 			$this->app->user()->setAuthenticated(true);
@@ -271,12 +269,16 @@ class EmployeesController extends BackController
 			$this->app->user()->setAttribute('id', $formEmployee['id']);
 			$this->app->user()->setAttribute('firstName', $formEmployee['firstName']);
 			$this->app->user()->setAttribute('userName', $formEmployee['userName']);
+
+			$this->app->httpResponse()->redirect('bootstrap.php?action=showProducts'); 
 		}
 
-	    else
+	   else
 		{
 			//on ajoute l'erreur paramétrée de l'entité sur la vue
-			$this->page->addVar('erreurs', $formEmployee->erreurs());
+			$this->app->user()->setFlash('Entrez au moins un caractère autre q\'un espace pour valider chaque champ');
+
+			!empty($formEmployee->id()) ? $this->app->httpResponse()->redirect('bootstrap.php?action=seeAccount'): $this->app->httpResponse()->redirect('bootstrap.php?action=index'); 
 		}
 	}
 }

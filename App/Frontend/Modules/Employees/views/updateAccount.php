@@ -1,6 +1,5 @@
-
-<p>Mettez à jour les informations de votre compte.</p>
 <div class="form">
+	<p><div id='pMaj'>Mettez à jour les informations de votre compte.</div></p><br/>
 	<div class="blocForm">
 		<form method="post" action="bootstrap.php?action=updateAccount">
 			<?= isset($erreurs) && in_array(\Entity\Employees::NOM_INVALIDE, $erreurs) ? 'Veuillez saisir un nom.<br />' : '' ?>

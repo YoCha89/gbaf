@@ -15,7 +15,7 @@
       <header>
           <div id="tete">
             <div id="logo">
-              <img src="images/LogoGBAF.png" alt="LogoGBAF" id="LogoHeader"/>
+              <a href="bootstrap.php?action=index"><img src="images/LogoGBAF.png" alt="LogoGBAF" id="LogoHeader"/></a>
             </div>
             <?php
             //affichage dynamique du bloc compte utilisateur en cas de connexion
@@ -42,7 +42,7 @@
 
      <div id="content-wrap">
         <section id="main">
-          <?php if ($user->hasFlash()) echo '<p style="text-align: center;">', $user->getFlash(), '</p>';//Affichage des feedbacks utilisateurs pour confirmer la réussite d'une requête ou lui permettre de corriger ses erreurs ?>
+          <?php if ($user->hasFlash()) echo '<p><div class="flash">', $user->getFlash(),'</div></p>';//Affichage des feedbacks utilisateurs pour confirmer la réussite d'une requête ou lui permettre de corriger ses erreurs ?>
           
           <?= $content ?>
         </section>

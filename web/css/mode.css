@@ -83,6 +83,12 @@
 		margin-bottom : 4rem;
 	}
 
+	.flash/*mise en forme des message flash*/
+	{
+		color: #ff0000;
+		text-align: center;
+	}
+
 
 /*MISE EN FORME LAYOUT (HEADER ET FOOTER) / LAYOUT STYLE (HEADER AND FOOTER) */
 	/*Capsule de tout le header / Box trapping the whole hearder*/
@@ -177,6 +183,11 @@
 		color : #ffffff;
 		margin-left: 0.3rem;
 		margin-right: 0.3rem;
+	}
+
+	#pMaj
+	{
+		color : ffffff;
 	}
 
 
@@ -329,7 +340,7 @@
 		width : 85%;
 		margin : auto;
 		background-color: #ffffff;
-		border-radius: 20% 20% 10% 10%;
+		border-radius: 20px 20px 20px 20px;
 
 	}
 
@@ -360,7 +371,7 @@
 			align-items: center;
 			background: linear-gradient(#ff0000, #a31c1c);
 			flex : 3;
-			border-radius: 0% 20% 0% 0%;
+			border-radius: 20px 20px 0% 0%;
 			padding : 0.5rem;
 		}
 
@@ -786,6 +797,17 @@
 
 @media (min-width: 300px) and (max-width: 767px)/*Smartphone*/
 {
+	/*STYLE GENERAL*/
+	h1
+	{
+		font-size : 2.6rem;
+	}
+
+	h2
+	{
+		text-align: center;
+	}
+
 	/*STYLE LAYOUT SMARTPHONE*/
 	#LogoHeader
 	{
@@ -854,11 +876,30 @@
 	}
 
 	/*STYLE PAGE LISTE ACTEUR / STYLE FOR ACTOR LIST PAGE*/
+	#banniere 
+	{
+		margin:0;
+		width: 100%;
+	}
+
+	#prezList
+	{
+		padding: 0;
+		padding-top: 1rem;
+	}
+
 	.acteur
 	{
 		flex-direction: column;
 		border-radius: 0 0 0 0;
 		padding: 1rem;
+	}
+
+	#logoPartenaire
+	{
+		width: 9rem;
+		height: auto;
+		align-items: center;
 	}
 
 	.partenaireTextuelle

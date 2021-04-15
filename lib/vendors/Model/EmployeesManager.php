@@ -27,18 +27,8 @@ abstract class EmployeesManager extends Manager
 	//fonction permettant un chemin similaire pour la création/mise à jour de compte au sein du controleur du module Employees.
 	public function saveEmployee(Employees $employee)
   	{
-	    if ($employee->isValid())
-	    {
-	    	/*$test=$employee->isNew();
-	      var_dump($test);
-	      die;*/
-	      $employee->isNew() ? $this->addEmployee($employee) : $this->updateEmployee($employee);
-	    }
-	    else
-	    {
-	      throw new \RuntimeException('Le profil doit être validée pour être enregistrée');
-	    }
-  }
+	    $employee->isNew() ? $this->addEmployee($employee) : $this->updateEmployee($employee);
+	}
 }
 
 

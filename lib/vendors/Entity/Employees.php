@@ -19,10 +19,19 @@ class Employees extends Entity
 	const QUESTION_NON_VALIDE = 5;
 	const REPONSE_NON_VALIDE = 6;
 
-    public function isValid()
-    {
-      return !(empty($this->name) || empty($this->firstName) || empty($this->userName) || empty($this->pass) || empty($this->secretQ) || empty($this->secretA));
-    }
+  //Nous excluons les champs vides ou les champs composés uniquement d'espaces
+  public function isValid()
+  {
+      if (!(empty($this->name) || empty($this->firstName) || empty($this->userName) || empty($this->pass) || empty($this->secretQ) || empty($this->secretA)))
+      {
+        return !(preg_match('#^\s+$#', $this->name) || preg_match('#^\s+$#', $this->firstName) || preg_match('#^\s+$#', $this->userName) || preg_match('#^\s+$#', $this->pass) || preg_match('#^\s+$#', $this->secretQ) || preg_match('#^\s+$#', $this->secretA));
+      }
+
+      else
+      {
+        return false;
+      }
+  }
 
   // GETTERS //
   public function name()
