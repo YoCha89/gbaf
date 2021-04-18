@@ -161,8 +161,9 @@ class ProductsController extends BackController
 
             else
             {
-                //on ajoute l'erreur paramétrée de l'entité sur la vue
-                $this->page->addVar('erreurs', $comment->erreurs());
+                //on guide l'utilisateur pour corriger son erreur
+                $this->app->user()->setFlash('Entrez au moins un caractère autre q\'un espace pour valider chaque champ');
+                $this->app->httpResponse()->redirect('bootstrap.php?action=commentProduct&id='.$request->getdata('id'));
             }
             
         }

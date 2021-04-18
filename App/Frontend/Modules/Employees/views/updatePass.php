@@ -9,8 +9,8 @@
 			</div>
 
 			<div class="champ">
-			<label for="ConfNewPass">Confirmer le nouveau mot de passe : </label>
-			<input type="password" name="ConfNewPass">
+			<label for="confNewPass">Confirmer le nouveau mot de passe : </label>
+			<input type="password" name="confNewPass">
 			</div>
 
 			<p>Question secrète : <?= nl2br(htmlspecialchars($employee['secretQ'])) ?></p><!--Affichage de la question secrète-->

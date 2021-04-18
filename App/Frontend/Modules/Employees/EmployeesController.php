@@ -156,7 +156,6 @@ class EmployeesController extends BackController
 		}
 	}
 
-
 	//Mise à jour du mot de passe en cas d'oubli.
 	public function executeUpdatePass (HTTPRequest $request)
 	{
@@ -167,62 +166,66 @@ class EmployeesController extends BackController
 	    $employee = $managerE->getEmployeePerUserName($request->postData('userName'));
 
 	    //On vérifie que le userName existe (soit, que le comte existe)
-	    if (empty($employee))
+	    if (!empty($employee))
 	    {
-	    	$this->app->user()->setFlash('Ce nom d\'utilisateur n\'existe pas.');
+	    	//Si le champs "newPass" est rempli via le formulaire, l'utilisateur est intervenu sur le formulaire et on lance le script de mise à jour en BDD
+			if (!empty($request->postData('newPass')))
+			{
+				//Les champs de mot de passe sont complété avec des caractères autres que des espaces
+				if (empty($request->postData('confNewPass')) || (preg_match('#^\s+$#', $request->postData('newPass')) || preg_match('#^\s+$#', $request->postData('confNewPass'))))
+				{
+					$this->app->user()->setFlash('Entrez au moins un caractère autre q\'un espace pour valider chaque champ');
+		        	$this->app->httpResponse()->redirect('bootstrap.php?action=index');
+		        }
+
+	            else
+		        {
+		        	//Vérification de la réponse secrète de l'utilisateur
+					if ($request->postData('secretA') !== $employee['secretA'])
+					{
+		            	$this->app->user()->setFlash('Vous n\'avez pas entré la bonne réponse à votre question secrète.');
+		        		$this->app->httpResponse()->redirect('bootstrap.php?action=index');
+		            }
+
+		            else
+		            {
+		            	//Vérification concordance des 2 pass entrés avant création en BDD
+						if ($request->postData('newPass') != $request->postData('confNewPass'))
+						{
+							$this->app->user()->setFlash('Vous avez saisie 2 mots de passe différents.');
+							$this->app->httpResponse()->redirect('bootstrap.php?action=index');
+						}
+
+						else
+						{
+							$pass = password_hash($request->postData('newPass'), PASSWORD_DEFAULT);
+
+			            	$managerE->updatePass($request->postData('userName'), $pass);
+
+			            	$this->app->user()->setFlash('Votre mot de passe a bien été mis à jour !');
+
+							//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
+							$this->app->httpResponse()->redirect('bootstrap.php?action=index');
+			            }
+		            }
+		        }
+		    }
+
+		    //Si le champs "newPass" n'est pas rempli, l'utilisateur vient d'arriver sur l'interface, on affiche la question
+		    else
+		    {
+		    	//Récupération des infos de l'utilisateur en BDD 
+		    	$this->page->addVar('employee', $employee);
+		    }
+	    }
+
+	    else if (empty($employee))
+	    {
+	    	$this->app->user()->setFlash('Entrez un nom d\'utilisateur valide pour modifier votre mot de passe.');
 	    	$this->app->httpResponse()->redirect('bootstrap.php?action=index');
 	    }
 
-		//Si le champs "newPass" est rempli, l'utilisateur est intervenu sur le formulaire et on lance le script de mise à jour en BDD
-		if ($request->postExists('newPass'))
-		{
-			//Vérification de la réponse secrète de l'utilisateur
-			if ($request->postData('secretA') == $employee['secretA'])
-			{
-				//Vérification concordance des 2 pass entrés avant création en BDD
-				if ($request->postData('newPass') != $request->postData('ConfNewPass'))
-				{
-					$this->app->user()->setFlash('Vous avez saisie 2 mots de passe différents.');
-					$this->app->httpResponse()->redirect('bootstrap.php?action=index');
-				}
-
-				else
-				{
-					$pass = password_hash($request->postData('newPass'), PASSWORD_DEFAULT);
-
-	            	$managerE->updatePass($request->postData('userName'), $pass);
-
-	            	$this->app->user()->setFlash('Votre mot de passe a bien été mis à jour !');
-
-					//On redirigre sur la page "Paramètre du compte" ou l'utilisateur voit les infos à jour
-					$this->app->httpResponse()->redirect('bootstrap.php?action=index');
-	            }
-            }
-
-             else
-	        {
-	        	$this->app->user()->setFlash('Vous n\'avez pas entré la bonne réponse à votre question secrète.');
-	        	$this->app->httpResponse()->redirect('bootstrap.php?action=index');
-	        }
-	    }
-
-	     //Si le champs "newPass" n'est pas rempli, l'utilisateur vient d'arriver sur l'interface, on affiche la question
-	    else
-	    {
-	    	//Récupération des infos de l'utilisateur en BDD 
-	    	if (!empty ($request->postData('userName')))
-	    	{
-	    		$employee = $managerE->getEmployeePerUserName($request->postData('userName'));
-	    		$this->page->addVar('employee', $employee);
-	    	}
-
-	    	else
-	    	{
-	    		$this->app->user()->setFlash('Entrez votre nom d\'utilisateur pour modifier votre mot de passe.');
-	    		$this->app->httpResponse()->redirect('bootstrap.php?action=index');
-	    	}
-	    	
-	    }
+		
 	}
 
 
